@@ -65,7 +65,7 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                       letterSpacing: 1.5,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 4),
                   RichText(
                     text: const TextSpan(
                       children: [
@@ -249,20 +249,22 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
   }
 
   Widget _buildNumberRow(List<String> numbers) {
-    return Row(
-      children: numbers.map((number) {
-        return Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4),
-            child: _buildKeypadButton(
-              text: number,
-              onPressed: () => onNumberPressed(number),
-              backgroundColor: const Color(0xFF2d3548),
-            ),
+    List<Widget> children = [];
+    for (int i = 0; i < numbers.length; i++) {
+      children.add(
+        Expanded(
+          child: _buildKeypadButton(
+            text: numbers[i],
+            onPressed: () => onNumberPressed(numbers[i]),
+            backgroundColor: const Color(0xFF2d3548),
           ),
-        );
-      }).toList(),
-    );
+        ),
+      );
+      if (i < numbers.length - 1) {
+        children.add(const SizedBox(width: 12));
+      }
+    }
+    return Row(children: children);
   }
 
   Widget _buildKeypadButton({

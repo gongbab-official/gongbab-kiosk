@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SuccessScreen extends StatefulWidget {
   const SuccessScreen({super.key});
@@ -13,7 +14,7 @@ class _SuccessScreenState extends State<SuccessScreen>
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
-  int remainingSeconds = 2;
+  int remainingSeconds = 20;
   Timer? _countdownTimer;
   double _progress = 1.0;
 
@@ -86,11 +87,11 @@ class _SuccessScreenState extends State<SuccessScreen>
           children: [
             // Header
             Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: EdgeInsets.all(24.w),
               child: Text(
                 'CHECK-IN STATUS',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 16.sp,
                   fontWeight: FontWeight.w600,
                   color: Colors.white.withOpacity(0.6),
                   letterSpacing: 2,
@@ -109,8 +110,8 @@ class _SuccessScreenState extends State<SuccessScreen>
                     child: FadeTransition(
                       opacity: _fadeAnimation,
                       child: Container(
-                        width: 280,
-                        height: 280,
+                        width: 280.w,
+                        height: 280.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: RadialGradient(
@@ -124,11 +125,11 @@ class _SuccessScreenState extends State<SuccessScreen>
                         ),
                         child: Center(
                           child: Container(
-                            width: 160,
-                            height: 160,
-                            decoration: const BoxDecoration(
+                            width: 160.w,
+                            height: 160.w,
+                            decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              gradient: LinearGradient(
+                              gradient: const LinearGradient(
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: [
@@ -138,16 +139,16 @@ class _SuccessScreenState extends State<SuccessScreen>
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Color(0xFF10b981),
-                                  blurRadius: 40,
-                                  spreadRadius: -10,
+                                  color: const Color(0xFF10b981),
+                                  blurRadius: 40.r,
+                                  spreadRadius: -10.r,
                                 ),
                               ],
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.check,
-                              size: 80,
-                              color: Color(0xFF1a1f2e),
+                              size: 80.sp,
+                              color: const Color(0xFF1a1f2e),
                             ),
                           ),
                         ),
@@ -155,59 +156,59 @@ class _SuccessScreenState extends State<SuccessScreen>
                     ),
                   ),
 
-                  const SizedBox(height: 60),
+                  SizedBox(height: 60.h),
 
                   // Success message in Korean
-                  const Text(
+                  Text(
                     '식권 체크 완료',
                     style: TextStyle(
-                      fontSize: 36,
+                      fontSize: 36.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       height: 1.3,
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
 
-                  const Text(
+                  Text(
                     '맛있게 식사하세요',
                     style: TextStyle(
-                      fontSize: 24,
-                      color: Color(0xFF9ca3af),
+                      fontSize: 24.sp,
+                      color: const Color(0xFF9ca3af),
                       height: 1.3,
                     ),
                   ),
 
-                  const SizedBox(height: 60),
+                  SizedBox(height: 60.h),
 
                   // Approved button
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 60,
-                      vertical: 18,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 60.w,
+                      vertical: 18.h,
                     ),
                     decoration: BoxDecoration(
                       color: const Color(0xFF1e40af),
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(50.r),
                       border: Border.all(
                         color: const Color(0xFF3b82f6),
-                        width: 2,
+                        width: 2.w,
                       ),
                       boxShadow: [
                         BoxShadow(
                           color: const Color(0xFF3b82f6).withOpacity(0.3),
-                          blurRadius: 20,
+                          blurRadius: 20.r,
                           spreadRadius: 0,
                         ),
                       ],
                     ),
-                    child: const Text(
+                    child: Text(
                       '승인됨 (Approved)',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 18.sp,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF60a5fa),
+                        color: const Color(0xFF60a5fa),
                         letterSpacing: 0.5,
                       ),
                     ),
@@ -218,35 +219,35 @@ class _SuccessScreenState extends State<SuccessScreen>
 
             // Bottom countdown section
             Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: EdgeInsets.all(24.w),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.refresh,
-                        size: 16,
-                        color: Color(0xFF6b7280),
+                        size: 16.sp,
+                        color: const Color(0xFF6b7280),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Text(
                         '$remainingSeconds초 후 홈으로 이동합니다',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF6b7280),
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: const Color(0xFF6b7280),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(height: 16.h),
 
                   // Progress bar
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10.r),
                     child: LinearProgressIndicator(
                       value: _progress,
-                      minHeight: 6,
+                      minHeight: 6.h,
                       backgroundColor: const Color(0xFF2d3548),
                       valueColor: const AlwaysStoppedAnimation<Color>(
                         Color(0xFF3b82f6),

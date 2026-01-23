@@ -48,9 +48,16 @@ class _SuccessScreenState extends State<SuccessScreen>
   }
 
   void _startCountdown() {
-    _countdownTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+    const int totalDurationInSeconds = 2;
+    const int timerIntervalInMilliseconds = 50;
+    const int totalTicks =
+        totalDurationInSeconds * 1000 ~/ timerIntervalInMilliseconds;
+
+    _countdownTimer =
+        Timer.periodic(const Duration(milliseconds: timerIntervalInMilliseconds),
+            (timer) {
       setState(() {
-        _progress -= 0.05 / 20; // Decrease over 2 seconds
+        _progress -= 1.0 / totalTicks;
         if (_progress <= 0) {
           _progress = 0;
         }
@@ -67,7 +74,7 @@ class _SuccessScreenState extends State<SuccessScreen>
         _countdownTimer?.cancel();
         // Navigate back or to home screen
         if (mounted) {
-          // context.pop();
+          context.pop();
         }
       }
     });

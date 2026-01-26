@@ -26,11 +26,11 @@
 
 | Phone Number Input | Pin Input |
 | :---: | :---: |
-| ![Phone Number Input](screenshots/simulator_screenshot_F9F382AA-4276-48EF-ADB1-F26F71A8EFE6.png) | ![Pin Input](screenshots/simulator_screenshot_3F338646-0EBF-4D22-98D7-EA65B08FC81C.png) |
+| ![Phone Number Input](screenshots/simulator_screenshot_F9F382AA-4276-48EF-ADB1-F26F71A8EFE6.png) | ![Pin Input](screenshots/simulator_screenshot_4A6BB010-2B39-4B70-9F17-94A8FD309ADA.png) |
 
 | Select Name Dialog | Success |
 | :---: | :---: |
-| ![Select Name Dialog](screenshots/simulator_screenshot_E17DA38B-5A81-45E9-9BBA-535EEE5932B4.png) | ![Success](screenshots/simulator_screenshot_4A6BB010-2B39-4B70-9F17-94A8FD309ADA.png) |
+| ![Select Name Dialog](screenshots/simulator_screenshot_E17DA38B-5A81-45E9-9BBA-535EEE5932B4.png) | ![Success](screenshots/simulator_screenshot_3F338646-0EBF-4D22-98D7-EA65B08FC81C.png) |
 
 
 ## Getting Started

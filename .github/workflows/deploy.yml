@@ -25,7 +25,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Flutter web app
-        run: flutter build web --release --base-href /gongbab/
+        run: flutter build web --release --base-href /gongbab-kiosk/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

@@ -24,11 +24,11 @@
 
 ## 📸 Screenshots
 
-| Phone Number Input | Success |
+| Phone Number Input | Pin Input |
 | :---: | :---: |
 | ![Phone Number Input](screenshots/simulator_screenshot_F9F382AA-4276-48EF-ADB1-F26F71A8EFE6.png) | ![Pin Input](screenshots/simulator_screenshot_4A6BB010-2B39-4B70-9F17-94A8FD309ADA.png) |
 
-| Pin Input |
+| Success |
 | :---: |
 | ![Success](screenshots/simulator_screenshot_3F338646-0EBF-4D22-98D7-EA65B08FC81C.png) |
 

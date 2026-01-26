@@ -1,7 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gongbab/app/router/app_routes.dart';
+
+import '../select_name/fake_worker.dart';
+import '../select_name/select_name_dialog.dart';
 
 class PhoneNumberInputScreen extends StatefulWidget {
   const PhoneNumberInputScreen({super.key});
@@ -32,14 +37,61 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
 
   void onOkPressed() {
     if (pin.length == pinLength) {
-      // Handle authentication logic here
-      context.push(AppRoutes.success);
-      // Reset after verification
+      // For testing: randomly show dialog or navigate to success
+      final random = Random();
+      if (random.nextBool()) {
+        // Navigate to success screen
+        context.push(AppRoutes.success);
+      } else {
+        // Show worker selection dialog
+        _showWorkerSelectionDialog(context);
+      }
+
+      // Reset after action
       setState(() {
         pin = '';
       });
     }
   }
+
+  void _showWorkerSelectionDialog(BuildContext context) {
+    final workers = [
+      Worker(
+        name: '김철수',
+        employeeId: '2023-1234',
+        department: '조립1팀',
+      ),
+      Worker(
+        name: '김철수',
+        employeeId: '2021-5678',
+        department: '품질관리',
+      ),
+      Worker(
+        name: '김철수',
+        employeeId: '2019-9012',
+        department: '물류센터',
+      ),
+    ];
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => SelectNameDialog(
+        workers: workers,
+        onWorkerSelected: (worker) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '선택됨: ${worker.name} (${worker.employeeId})',
+              ),
+              backgroundColor: const Color(0xFF3b82f6),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {

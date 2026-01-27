@@ -2,7 +2,9 @@ import 'package:gongbab/data/network/api_service.dart';
 import 'package:gongbab/data/models/kiosk_status_model.dart';
 import 'package:gongbab/domain/entities/kiosk_status.dart'; // Domain Layer 엔티티 임포트
 import 'package:gongbab/domain/repositories/kiosk_repository.dart'; // Domain Layer 리포지토리 인터페이스 임포트
+import 'package:injectable/injectable.dart'; // injectable 임포트
 
+@LazySingleton(as: KioskRepository) // KioskRepository 인터페이스의 구현체로 지연 로딩 싱글톤 등록
 class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터페이스 구현
   final ApiService _apiService;
 

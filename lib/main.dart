@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gongbab/app/router/app_router.dart';
+import 'package:gongbab/di/injection.dart'; // DI 설정 파일 임포트
 
-void main() {
+void main() async { // 비동기 초기화를 위해 main 함수를 async로 변경
+  WidgetsFlutterBinding.ensureInitialized(); // Flutter 엔진 초기화 보장
+  await configureDependencies(); // 의존성 주입 초기화
+
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,

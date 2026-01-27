@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:injectable/injectable.dart'; // injectable 임포트
 
+@singleton // 싱글톤으로 등록
 class ApiService {
   final Dio _dio;
 

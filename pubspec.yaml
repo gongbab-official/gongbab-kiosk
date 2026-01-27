@@ -41,10 +41,13 @@ dependencies:
   json_annotation: ^4.9.0 # JSON 직렬화/역직렬화 어노테이션
   pretty_dio_logger: ^1.0.0 # Dio 로깅
   equatable: ^2.0.5 # 값 비교를 위한 라이브러리
+  get_it: ^7.7.0 # 의존성 주입을 위한 서비스 로케이터
+  injectable: ^2.4.2 # get_it과 함께 코드 생성을 통한 의존성 주입
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  injectable_generator: ^2.6.1 # injectable 코드 생성기
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

@@ -106,39 +106,39 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                 children: [
                   // Title Section
                   const Spacer(),
-                  const Text(
+                  Text(
                     '휴대폰 번호',
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 32.sp,
                       fontWeight: FontWeight.w900,
                       color: Colors.white,
                       letterSpacing: 1.5,
                     ),
                   ),
-                  SizedBox(height: 4.h),
+                  // SizedBox(height: 4.h),
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       children: [
                         TextSpan(
                           text: '뒤 ',
                           style: TextStyle(
-                            fontSize: 32,
+                            fontSize: 32.sp,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF136bec),
+                            color: const Color(0xFF136bec),
                           ),
                         ),
                         TextSpan(
                           text: '4자리',
                           style: TextStyle(
-                            fontSize: 32,
+                            fontSize: 32.sp,
                             fontWeight: FontWeight.bold,
-                            color: Color(0xFF136bec),
+                            color: const Color(0xFF136bec),
                           ),
                         ),
                         TextSpan(
                           text: ' 입력',
                           style: TextStyle(
-                            fontSize: 32,
+                            fontSize: 32.sp,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
@@ -147,14 +147,14 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  const Text(
-                    'INDUSTRIAL RESTAURANT SYSTEM V1.0',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF6b7280),
-                      letterSpacing: 1.2,
-                    ),
-                  ),
+                  // Text(
+                  //   'INDUSTRIAL RESTAURANT SYSTEM V1.0',
+                  //   style: TextStyle(
+                  //     fontSize: 12.sp,
+                  //     color: const Color(0xFF6b7280),
+                  //     letterSpacing: 1.2,
+                  //   ),
+                  // ),
                   const Spacer(),
                   // PIN Display
                   Padding(
@@ -184,7 +184,7 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                                 child: Text(
                                   index < pin.length ? pin[index] : '—',
                                   style: TextStyle(
-                                    fontSize: 32,
+                                    fontSize: 40.sp,
                                     fontWeight: FontWeight.bold,
                                     color: index < pin.length
                                         ? Colors.white
@@ -199,15 +199,15 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                     ),
                   ),
                   const Spacer(),
-                  const Text(
-                    'EMPLOYEE VERIFICATION REQUIRED',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF6b7280),
-                      letterSpacing: 2,
-                    ),
-                  ),
-                  const Spacer(),
+                  // Text(
+                  //   'EMPLOYEE VERIFICATION REQUIRED',
+                  //   style: TextStyle(
+                  //     fontSize: 12.sp,
+                  //     color: const Color(0xFF6b7280),
+                  //     letterSpacing: 2,
+                  //   ),
+                  // ),
+                  // const Spacer(),
                 ],
               ),
             ),
@@ -276,11 +276,11 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                     'SERVER ONLINE',
                     const Color(0xFF10b981),
                   ),
-                  const Text(
+                  Text(
                     'KIOSK ID: FCT-092',
                     style: TextStyle(
-                      fontSize: 11,
-                      color: Color(0xFF6b7280),
+                      fontSize: 11.sp,
+                      color: const Color(0xFF6b7280),
                     ),
                   ),
                   _buildStatusItem(
@@ -358,7 +358,7 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
         Text(
           label,
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 11.sp,
             color: color,
           ),
         ),

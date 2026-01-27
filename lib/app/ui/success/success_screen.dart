@@ -97,21 +97,22 @@ class _SuccessScreenState extends State<SuccessScreen>
             // Header
             Padding(
               padding: EdgeInsets.all(24.w),
-              child: Text(
-                'CHECK-IN STATUS',
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white.withOpacity(0.6),
-                  letterSpacing: 2,
-                ),
-              ),
+              // child: Text(
+              //   'CHECK-IN STATUS',
+              //   style: TextStyle(
+              //     fontSize: 16.sp,
+              //     fontWeight: FontWeight.w600,
+              //     color: Colors.white.withOpacity(0.6),
+              //     letterSpacing: 2,
+              //   ),
+              // ),
             ),
 
             // Main content
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Animated checkmark circle
                   ScaleTransition(

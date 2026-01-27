@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'fake_worker.dart';
 
@@ -17,9 +18,9 @@ class SelectNameDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Dialog(
       backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.all(20),
+      insetPadding: EdgeInsets.all(32.w),
       child: Container(
-        constraints: const BoxConstraints(maxHeight: 700),
+        constraints: BoxConstraints(maxHeight: 700.h),
         decoration: BoxDecoration(
           color: const Color(0xFF1a1f2e),
           borderRadius: BorderRadius.circular(20),
@@ -32,34 +33,34 @@ class SelectNameDialog extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               child: Column(
                 children: [
-                  Text(
-                    'WORKER CHECK-IN',
-                    style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white.withOpacity(0.6),
-                      letterSpacing: 2,
-                    ),
-                  ),
+                  // Text(
+                  //   'WORKER CHECK-IN',
+                  //   style: TextStyle(
+                  //     fontSize: 14,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: Colors.white.withOpacity(0.6),
+                  //     letterSpacing: 2,
+                  //   ),
+                  // ),
                   const SizedBox(height: 24),
-                  const Text(
+                  Text(
                     '이름을 선택하세요',
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
                   ),
-                  const SizedBox(height: 12),
-                  Text(
-                    '동명이인이 발견되었습니다. 본인의 사번을\n확인 후 선택해 주세요.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.white.withOpacity(0.6),
-                      height: 1.5,
-                    ),
-                  ),
+                  SizedBox(height: 12.h),
+                  // Text(
+                  //   '동명이인이 발견되었습니다. 본인의 사번을\n확인 후 선택해 주세요.',
+                  //   textAlign: TextAlign.center,
+                  //   style: TextStyle(
+                  //     fontSize: 14,
+                  //     color: Colors.white.withOpacity(0.6),
+                  //     height: 1.5,
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -85,7 +86,7 @@ class SelectNameDialog extends StatelessWidget {
                 },
               ),
             ),
-
+            SizedBox(height: 20.h),
             // Search Again Button
             Padding(
               padding: const EdgeInsets.all(20),
@@ -102,11 +103,11 @@ class SelectNameDialog extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     '다시 검색하기',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w800,
                       color: Colors.white,
                     ),
                   ),
@@ -147,17 +148,17 @@ class _WorkerCard extends StatelessWidget {
                   children: [
                     Text(
                       worker.name,
-                      style: const TextStyle(
-                        fontSize: 24,
+                      style: TextStyle(
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(height: 4.h),
                     Text(
                       '사번: ${worker.employeeId} (${worker.department})',
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 12.sp,
                         color: Colors.white.withOpacity(0.8),
                       ),
                     ),

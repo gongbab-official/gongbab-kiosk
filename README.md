@@ -14,6 +14,18 @@
   - [Material Design](https://material.io/)
   - [Cupertino Icons](https://pub.dev/packages/cupertino_icons)
   - [flutter_screenutil](https://pub.dev/packages/flutter_screenutil)
+- **Routing**:
+  - [go_router](https://pub.dev/packages/go_router)
+- **State Management / DI**:
+  - [get_it](https://pub.dev/packages/get_it)
+  - [injectable](https://pub.dev/packages/injectable)
+- **Networking**:
+  - [dio](https://pub.dev/packages/dio)
+  - [pretty_dio_logger](https://pub.dev/packages/pretty_dio_logger)
+- **Code Generation**:
+  - [json_serializable](https://pub.dev/packages/json_serializable)
+  - [build_runner](https://pub.dev/packages/build_runner)
+  - [injectable_generator](https://pub.dev/packages/injectable_generator)
 - **Fonts**:
   - [Pretendard](https://github.com/orioncactus/pretendard)
 - **Testing**:

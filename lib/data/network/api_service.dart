@@ -1,54 +1,30 @@
-import 'package:dio/dio.dart';
-import 'package:pretty_dio_logger/pretty_dio_logger.dart';
-import 'package:injectable/injectable.dart'; // injectable 임포트
+import 'package:gongbab/data/models/common_model.dart';
+import 'package:gongbab/data/models/kiosk_status_model.dart';
+import 'package:gongbab/data/network/app_api_client.dart';
+import 'package:gongbab/data/network/rest_api_client.dart';
+import 'package:gongbab/domain/utils/result.dart';
+import 'package:injectable/injectable.dart';
 
-@singleton // 싱글톤으로 등록
+@singleton
 class ApiService {
-  final Dio _dio;
+  final AppApiClient _appApiClient;
 
-  ApiService() : _dio = Dio() {
-    _dio.options.baseUrl = 'YOUR_BASE_API_URL'; // 실제 API 기본 URL로 변경 필요
-    _dio.options.connectTimeout = const Duration(seconds: 5);
-    _dio.options.receiveTimeout = const Duration(seconds: 3);
+  ApiService(this._appApiClient);
 
-    // 개발 환경에서 API 요청/응답 로깅을 위한 인터셉터 추가
-    _dio.interceptors.add(PrettyDioLogger(
-      requestHeader: true,
-      requestBody: true,
-      responseBody: true,
-      responseHeader: false,
-      error: true,
-      compact: true,
-      maxWidth: 90,
-    ));
+  Future<Result<KioskStatusModel>> getKioskStatus(int restaurantId) async {
+    return _appApiClient.request(
+      method: RestMethod.get,
+      path: '/api/v1/restaurants/$restaurantId/kiosks/heartbeat',
+      fromJson: KioskStatusModel.fromJson,
+    );
   }
 
-  // 예시: 키오스크 상태를 가져오는 API 호출
-  Future<Map<String, dynamic>> getKioskStatus() async {
-    try {
-      final response = await _dio.get('/kiosk/status'); // 실제 엔드포인트로 변경 필요
-      return response.data;
-    } on DioException catch (e) {
-      // Dio 에러 처리
-      throw Exception('Failed to load kiosk status: ${e.message}');
-    } catch (e) {
-      // 일반 에러 처리
-      throw Exception('An unexpected error occurred: $e');
-    }
-  }
-
-  // 예시: 식권 체크인 API 호출
-  Future<Map<String, dynamic>> checkTicket(String ticketId) async {
-    try {
-      final response = await _dio.post(
-        '/ticket/checkin', // 실제 엔드포인트로 변경 필요
-        data: {'ticketId': ticketId},
-      );
-      return response.data;
-    } on DioException catch (e) {
-      throw Exception('Failed to check ticket: ${e.message}');
-    } catch (e) {
-      throw Exception('An unexpected error occurred: $e');
-    }
+  Future<Result<CommonModel>> checkTicket(String ticketId) async {
+    return _appApiClient.request(
+      method: RestMethod.post,
+      path: '/ticket/checkin',
+      data: {'ticketId': ticketId},
+      fromJson: CommonModel.fromJson,
+    );
   }
 }

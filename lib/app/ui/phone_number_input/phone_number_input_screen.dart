@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:gongbab/app/router/app_routes.dart';
 import 'package:gongbab/app/ui/phone_number_input/phone_number_input_view_model.dart';
 import 'package:get_it/get_it.dart';
+import 'package:gongbab/app/ui/phone_number_input/phone_number_input_ui_state.dart'; // Import the new state file
+import 'package:gongbab/app/ui/phone_number_input/phone_number_input_event.dart'; // Import the new event file
 
 import '../select_name/fake_worker.dart';
 import '../select_name/select_name_dialog.dart';

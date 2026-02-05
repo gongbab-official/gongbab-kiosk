@@ -1,31 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:gongbab/domain/entities/kiosk_status.dart';
 import 'package:gongbab/domain/usecases/get_kiosk_status_usecase.dart';
 import 'package:injectable/injectable.dart';
-
-// UI State
-sealed class PhoneNumberInputUiState {}
-
-class PhoneNumberInputInitial extends PhoneNumberInputUiState {}
-
-class PhoneNumberInputLoading extends PhoneNumberInputUiState {}
-
-class PhoneNumberInputSuccess extends PhoneNumberInputUiState {
-  final KioskStatus kioskStatus;
-
-  PhoneNumberInputSuccess(this.kioskStatus);
-}
-
-class PhoneNumberInputError extends PhoneNumberInputUiState {
-  final String message;
-
-  PhoneNumberInputError(this.message);
-}
-
-// UI Event
-sealed class PhoneNumberInputUiEvent {}
-
-class FetchKioskStatus extends PhoneNumberInputUiEvent {}
+import 'package:gongbab/app/ui/phone_number_input/phone_number_input_ui_state.dart'; // Import the new state file
+import 'package:gongbab/app/ui/phone_number_input/phone_number_input_event.dart'; // Import the new event file
 
 @injectable
 class PhoneNumberInputViewModel extends ChangeNotifier {
@@ -41,7 +18,7 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void onEvent(PhoneNumberInputUiEvent event) {
+  void onEvent(PhoneNumberInputEvent event) {
     switch (event) {
       case FetchKioskStatus():
         _fetchKioskStatus();

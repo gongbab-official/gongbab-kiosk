@@ -1,5 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
+import '../domain/usecases/get_employee_candidates_usecase.dart';
 import 'injection.config.dart'; // 코드 생성기가 생성할 파일
 import 'package:gongbab/domain/repositories/kiosk_repository.dart';
 import 'package:gongbab/domain/usecases/get_kiosk_status_usecase.dart';

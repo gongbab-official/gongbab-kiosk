@@ -1,10 +1,10 @@
-class EmployeeMatchEntity {
+class EmployeeMatch {
   final int employeeId;
   final String name;
   final int companyId;
   final String companyName;
 
-  EmployeeMatchEntity({
+  EmployeeMatch({
     required this.employeeId,
     required this.name,
     required this.companyId,

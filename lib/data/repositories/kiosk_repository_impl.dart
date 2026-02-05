@@ -4,8 +4,8 @@ import 'package:gongbab/domain/repositories/kiosk_repository.dart'; // Domain La
 import 'package:gongbab/domain/utils/result.dart';
 import 'package:injectable/injectable.dart'; // injectable 임포트
 import 'package:gongbab/domain/entities/common.dart'; // Import the domain entity
-import 'package:gongbab/domain/entities/employee_lookup_entity.dart'; // Import new entity
-import 'package:gongbab/domain/entities/employee_match_entity.dart'; // Import new entity
+import 'package:gongbab/domain/entities/employee_lookup.dart'; // Import new entity
+import 'package:gongbab/domain/entities/employee_match.dart'; // Import new entity
 
 @LazySingleton(as: KioskRepository) // KioskRepository 인터페이스의 구현체로 지연 로딩 싱글톤 등록
 class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터페이스 구현
@@ -39,7 +39,7 @@ class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터
     final result = await _apiService.checkTicket(ticketId);
     return result.when(
       success: (model) => Result.success(Common(
-        code: model.success, // Assuming Common.code maps to CommonModel.success
+        success: model.success, // Assuming Common.code maps to CommonModel.success
         data: model.data,
       )),
       failure: (code, data) => Result.failure(code, data),
@@ -48,7 +48,7 @@ class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터
   }
 
   @override
-  Future<Result<EmployeeLookupEntity>> getEmployeeCandidates({
+  Future<Result<EmployeeLookup>> getEmployeeCandidates({
     required int restaurantId,
     required String phoneLastFour,
   }) async {
@@ -57,9 +57,9 @@ class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터
       phoneLastFour: phoneLastFour,
     );
     return result.when(
-      success: (model) => Result.success(EmployeeLookupEntity(
+      success: (model) => Result.success(EmployeeLookup(
         matches: model.matches
-            .map((matchModel) => EmployeeMatchEntity(
+            .map((matchModel) => EmployeeMatch(
                   employeeId: matchModel.employeeId,
                   name: matchModel.name,
                   companyId: matchModel.companyId,

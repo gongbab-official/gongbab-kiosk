@@ -11,10 +11,18 @@ class ApiService {
 
   ApiService(this._appApiClient);
 
-  Future<Result<KioskStatusModel>> getKioskStatus(int restaurantId) async {
+  Future<Result<KioskStatusModel>> getKioskStatus({
+    required int restaurantId,
+    required String kioskCode,
+    required String clientTime,
+  }) async {
     return _appApiClient.request(
-      method: RestMethod.get,
+      method: RestMethod.post, // Changed to POST
       path: '/api/v1/restaurants/$restaurantId/kiosks/heartbeat',
+      data: { // Added request body
+        'kioskCode': kioskCode,
+        'clientTime': clientTime,
+      },
       fromJson: KioskStatusModel.fromJson,
     );
   }

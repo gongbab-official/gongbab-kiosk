@@ -9,15 +9,11 @@ part of 'kiosk_status_model.dart';
 KioskStatusModel _$KioskStatusModelFromJson(Map<String, dynamic> json) =>
     KioskStatusModel(
       status: json['status'] as String,
-      message: json['message'] as String,
-      location: json['location'] as String,
-      lastUpdated: DateTime.parse(json['last_updated'] as String),
+      serverTime: json['serverTime'] as String,
     );
 
 Map<String, dynamic> _$KioskStatusModelToJson(KioskStatusModel instance) =>
     <String, dynamic>{
       'status': instance.status,
-      'message': instance.message,
-      'location': instance.location,
-      'last_updated': instance.lastUpdated.toIso8601String(),
+      'serverTime': instance.serverTime,
     };

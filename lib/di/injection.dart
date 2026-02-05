@@ -21,4 +21,9 @@ abstract class RegisterModule {
   GetKioskStatusUseCase getKioskStatusUseCase(KioskRepository repository) {
     return GetKioskStatusUseCase(repository);
   }
+
+  @lazySingleton
+  GetEmployeeCandidatesUseCase getEmployeeCandidatesUseCase(KioskRepository repository) {
+    return GetEmployeeCandidatesUseCase(repository);
+  }
 }

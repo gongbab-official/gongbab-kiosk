@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gongbab/app/router/app_routes.dart';
+import 'package:gongbab/app/ui/phone_number_input/phone_number_input_view_model.dart';
+import 'package:get_it/get_it.dart';
 
 import '../select_name/fake_worker.dart';
 import '../select_name/select_name_dialog.dart';
@@ -18,6 +20,38 @@ class PhoneNumberInputScreen extends StatefulWidget {
 class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
   String pin = '';
   final int pinLength = 4;
+  late final PhoneNumberInputViewModel _viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _viewModel = GetIt.I<PhoneNumberInputViewModel>();
+    _viewModel.addListener(_onViewModelChanged);
+  }
+
+  @override
+  void dispose() {
+    _viewModel.removeListener(_onViewModelChanged);
+    _viewModel.dispose();
+    super.dispose();
+  }
+
+  void _onViewModelChanged() {
+    final state = _viewModel.uiState;
+    if (state is PhoneNumberInputLoading) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Fetching Kiosk Status...')),
+      );
+    } else if (state is PhoneNumberInputSuccess) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Kiosk Status Success: ${state.kioskStatus.status}, ${state.kioskStatus.serverTime}')),
+      );
+    } else if (state is PhoneNumberInputError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Kiosk Status Error: ${state.message}')),
+      );
+    }
+  }
 
   void onNumberPressed(String number) {
     if (pin.length < pinLength) {
@@ -293,6 +327,12 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _viewModel.onEvent(FetchKioskStatus());
+        },
+        child: const Icon(Icons.refresh),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:gongbab/data/network/rest_api_client.dart';
 import 'package:gongbab/domain/utils/result.dart';
 import 'package:injectable/injectable.dart';
 import 'package:gongbab/data/models/employee_lookup_model.dart'; // Import new model
+import 'package:gongbab/data/models/kiosk_check_in_model.dart'; // Import new model
 
 @singleton
 class ApiService {
@@ -28,15 +29,6 @@ class ApiService {
     );
   }
 
-  Future<Result<CommonModel>> checkTicket(String ticketId) async {
-    return _appApiClient.request(
-      method: RestMethod.post,
-      path: '/ticket/checkin',
-      data: {'ticketId': ticketId},
-      fromJson: CommonModel.fromJson,
-    );
-  }
-
   Future<Result<EmployeeLookupModel>> getEmployeeCandidates({
     required int restaurantId,
     required String phoneLastFour,
@@ -48,6 +40,24 @@ class ApiService {
         'phoneLastFour': phoneLastFour,
       },
       fromJson: EmployeeLookupModel.fromJson,
+    );
+  }
+
+  Future<Result<KioskCheckInModel>> kioskCheckIn({
+    required int restaurantId,
+    required int employeeId,
+    required String kioskCode,
+    required String clientTime,
+  }) async {
+    return _appApiClient.request(
+      method: RestMethod.post,
+      path: '/api/v1/restaurants/$restaurantId/kiosk/check-in',
+      data: {
+        'employeeId': employeeId,
+        'kioskCode': kioskCode,
+        'clientTime': clientTime,
+      },
+      fromJson: KioskCheckInModel.fromJson,
     );
   }
 }

@@ -6,6 +6,10 @@ import 'package:injectable/injectable.dart'; // injectable 임포트
 import 'package:gongbab/domain/entities/common.dart'; // Import the domain entity
 import 'package:gongbab/domain/entities/employee_lookup.dart'; // Import new entity
 import 'package:gongbab/domain/entities/employee_match.dart'; // Import new entity
+import 'package:gongbab/domain/entities/kiosk_check_in.dart'; // Import new entity
+import 'package:gongbab/domain/entities/employee.dart'; // Import new entity
+import 'package:gongbab/domain/entities/company.dart'; // Import new entity
+import 'package:gongbab/data/models/kiosk_check_in_model.dart'; // Import new model
 
 @LazySingleton(as: KioskRepository) // KioskRepository 인터페이스의 구현체로 지연 로딩 싱글톤 등록
 class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터페이스 구현
@@ -29,20 +33,7 @@ class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터
         status: model.status,
         serverTime: model.serverTime,
       )),
-      failure: (success, data) => Result.failure(success, data),
-      error: (error) => Result.error(error),
-    );
-  }
-
-  @override
-  Future<Result<Common>> checkTicket(String ticketId) async {
-    final result = await _apiService.checkTicket(ticketId);
-    return result.when(
-      success: (model) => Result.success(Common(
-        success: model.success, // Assuming Common.code maps to CommonModel.success
-        data: model.data,
-      )),
-      failure: (success, data) => Result.failure(success, data),
+      failure: (code, data) => Result.failure(code, data),
       error: (error) => Result.error(error),
     );
   }
@@ -68,7 +59,42 @@ class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터
             .toList(),
         count: model.count,
       )),
-      failure: (success, data) => Result.failure(success, data),
+      failure: (code, data) => Result.failure(code, data),
+      error: (error) => Result.error(error),
+    );
+  }
+
+  @override
+  Future<Result<KioskCheckIn>> kioskCheckIn({
+    required int restaurantId,
+    required int employeeId,
+    required String kioskCode,
+    required String clientTime,
+  }) async {
+    final result = await _apiService.kioskCheckIn(
+      restaurantId: restaurantId,
+      employeeId: employeeId,
+      kioskCode: kioskCode,
+      clientTime: clientTime,
+    );
+    return result.when(
+      success: (model) => Result.success(KioskCheckIn(
+        result: model.result,
+        mealLogId: model.mealLogId,
+        mealType: model.mealType,
+        mealDate: model.mealDate,
+        employee: Employee(
+          id: model.employee.id,
+          name: model.employee.name,
+        ),
+        company: Company(
+          id: model.company.id,
+          name: model.company.name,
+        ),
+        eatenAt: model.eatenAt,
+        message: model.message,
+      )),
+      failure: (code, data) => Result.failure(code, data),
       error: (error) => Result.error(error),
     );
   }

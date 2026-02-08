@@ -18,6 +18,7 @@ import '../data/network/app_api_client.dart' as _i133;
 import '../data/repositories/kiosk_repository_impl.dart' as _i400;
 import '../domain/repositories/kiosk_repository.dart' as _i587;
 import '../domain/usecases/get_kiosk_status_usecase.dart' as _i5;
+import '../domain/usecases/kiosk_check_in_usecase.dart' as _i440;
 import 'injection.dart' as _i464;
 
 extension GetItInjectableX on _i174.GetIt {
@@ -39,6 +40,8 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i400.KioskRepositoryImpl(gh<_i589.ApiService>()));
     gh.lazySingleton<_i5.GetKioskStatusUseCase>(() =>
         registerModule.getKioskStatusUseCase(gh<_i587.KioskRepository>()));
+    gh.lazySingleton<_i440.KioskCheckInUseCase>(
+        () => registerModule.kioskCheckInUseCase(gh<_i587.KioskRepository>()));
     gh.factory<_i513.PhoneNumberInputViewModel>(
         () => _i513.PhoneNumberInputViewModel(gh<_i5.GetKioskStatusUseCase>()));
     return this;

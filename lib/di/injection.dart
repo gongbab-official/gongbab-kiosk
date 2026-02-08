@@ -3,6 +3,7 @@ import 'package:injectable/injectable.dart';
 import 'injection.config.dart'; // 코드 생성기가 생성할 파일
 import 'package:gongbab/domain/repositories/kiosk_repository.dart';
 import 'package:gongbab/domain/usecases/get_kiosk_status_usecase.dart';
+import 'package:gongbab/domain/usecases/kiosk_check_in_usecase.dart'; // Import new use case
 
 final getIt = GetIt.instance;
 
@@ -20,5 +21,10 @@ abstract class RegisterModule {
   @lazySingleton // Use lazySingleton for use cases
   GetKioskStatusUseCase getKioskStatusUseCase(KioskRepository repository) {
     return GetKioskStatusUseCase(repository);
+  }
+
+  @lazySingleton
+  KioskCheckInUseCase kioskCheckInUseCase(KioskRepository repository) {
+    return KioskCheckInUseCase(repository);
   }
 }

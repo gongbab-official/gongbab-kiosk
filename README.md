@@ -30,6 +30,8 @@
   - [Pretendard](https://github.com/orioncactus/pretendard)
 - **Testing**:
   - [flutter_test](https://api.flutter.dev/flutter/flutter_test/library.html)
+  - [mockito](https://pub.dev/packages/mockito)
+  - [test](https://pub.dev/packages/test)
 - **Linting**:
   - [flutter_lints](https://pub.dev/packages/flutter_lints)
 
@@ -55,18 +57,25 @@ lib/
 │   │   │   └── app_routes.dart
 │   │   └── ui/
 │   │       ├── phone_number_input/
-│   │       │   └── phone_number_input_screen.dart
+│   │       │   ├── phone_number_input_event.dart
+│   │       │   ├── phone_number_input_screen.dart
+│   │       │   ├── phone_number_input_ui_state.dart
+│   │       │   └── phone_number_input_view_model.dart
 │   │       ├── select_name/
-│   │       │   ├── fake_worker.dart
 │   │       │   └── select_name_dialog.dart
 │   │       └── success/
 │   │           └── success_screen.dart
 │   ├── data/
 │   │   ├── models/
-│   │   │   ├── kiosk_status_model.dart
-│   │   │   └── kiosk_status_model.g.dart
+│   │   │   ├── common_model.dart
+│   │   │   ├── common_model.g.dart
+│   │   │   ├── check_in/
+│   │   │   ├── lookup/
+│   │   │   └── status/
 │   │   ├── network/
-│   │   │   └── api_service.dart
+│   │   │   ├── api_service.dart
+│   │   │   ├── app_api_client.dart
+│   │   │   └── rest_api_client.dart
 │   │   └── repositories/
 │   │       └── kiosk_repository_impl.dart
 │   ├── di/
@@ -74,13 +83,33 @@ lib/
 │   │   └── injection.dart
 │   └── domain/
 │       ├── entities/
-│       │   └── kiosk_status.dart
+│       │   ├── common.dart
+│       │   ├── check_in/
+│       │   ├── lookup/
+│   │       │   └── employee_lookup.dart
+│   │       │   └── employee_match.dart
+│       │   └── status/
+│       │       └── kiosk_status.dart
 │       ├── repositories/
 │       │   └── kiosk_repository.dart
-│       └── usecases/
-│           ├── check_ticket_usecase.dart
-│           └── get_kiosk_status_usecase.dart
+│       ├── usecases/
+│       │   ├── get_employee_candidates_usecase.dart
+│       │   ├── get_kiosk_status_usecase.dart
+│       │   └── kiosk_check_in_usecase.dart
+│       └── utils/
+│           └── result.dart
 ```
+
+## Test Scenarios (PhoneNumberInputViewModel)
+
+The `PhoneNumberInputViewModel` is thoroughly tested to ensure correct behavior across various user interactions and API responses. The following scenarios are covered by unit tests:
+
+-   **Screen Initialization**: Verifies that the `ScreenInitialized` event correctly triggers the `GetKioskStatusUseCase` and updates the UI state to `KioskStatusLoaded` upon success.
+-   **Phone Number Entry - No Candidates**: When a phone number is entered (`PhoneNumberEntered` event) and `GetEmployeeCandidatesUseCase` returns no matching employees, the UI state correctly transitions to `Error`.
+-   **Phone Number Entry - Multiple Candidates**: If `GetEmployeeCandidatesUseCase` returns multiple employee matches, the UI state becomes `EmployeeCandidatesLoaded`, indicating that the UI should prompt the user for selection.
+-   **Phone Number Entry - Single Candidate (Check-in Success)**: When a single employee candidate is found, the `KioskCheckInUseCase` is automatically triggered. Upon successful check-in (`LOGGED` result), the UI state transitions to `CheckInSuccess`.
+-   **Phone Number Entry - Single Candidate (Already Logged)**: If a single employee candidate is found and `KioskCheckInUseCase` returns an `ALREADY_LOGGED` result, the UI state correctly becomes `AlreadyLogged`, providing an appropriate message to the user.
+-   **Employee Selection (Check-in Success)**: After a user selects an employee from a list (`EmployeeSelected` event), the `KioskCheckInUseCase` is called. A successful check-in (`LOGGED` result) leads to the `CheckInSuccess` state.
 
 ## Getting Started
 

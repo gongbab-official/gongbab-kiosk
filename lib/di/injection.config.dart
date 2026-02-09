@@ -52,6 +52,7 @@ extension GetItInjectableX on _i174.GetIt {
               gh<_i5.GetKioskStatusUseCase>(),
               gh<_i649.GetEmployeeCandidatesUseCase>(),
               gh<_i440.KioskCheckInUseCase>(),
+              gh<_i895.Connectivity>(),
             ));
     return this;
   }

@@ -1,16 +1,26 @@
 import 'package:flutter/foundation.dart';
+import 'package:gongbab/domain/usecases/get_employee_candidates_usecase.dart';
 import 'package:gongbab/domain/usecases/get_kiosk_status_usecase.dart';
+import 'package:gongbab/domain/usecases/kiosk_check_in_usecase.dart';
 import 'package:injectable/injectable.dart';
-import 'package:gongbab/app/ui/phone_number_input/phone_number_input_ui_state.dart'; // Import the new state file
-import 'package:gongbab/app/ui/phone_number_input/phone_number_input_event.dart'; // Import the new event file
+import 'package:gongbab/app/ui/phone_number_input/phone_number_input_ui_state.dart';
+import 'package:gongbab/app/ui/phone_number_input/phone_number_input_event.dart';
+import 'package:gongbab/domain/entities/lookup/employee_match.dart';
 
 @injectable
 class PhoneNumberInputViewModel extends ChangeNotifier {
   final GetKioskStatusUseCase _getKioskStatusUseCase;
+  final GetEmployeeCandidatesUseCase _getEmployeeCandidatesUseCase;
+  final KioskCheckInUseCase _kioskCheckInUseCase;
 
-  PhoneNumberInputViewModel(this._getKioskStatusUseCase);
+  PhoneNumberInputViewModel(
+    this._getKioskStatusUseCase,
+    this._getEmployeeCandidatesUseCase,
+    this._kioskCheckInUseCase,
+  );
 
-  PhoneNumberInputUiState _uiState = PhoneNumberInputInitial();
+  PhoneNumberInputUiState _uiState = Initial();
+
   PhoneNumberInputUiState get uiState => _uiState;
 
   void _setUiState(PhoneNumberInputUiState newState) {
@@ -20,19 +30,24 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
 
   void onEvent(PhoneNumberInputEvent event) {
     switch (event) {
-      case FetchKioskStatus():
+      case ScreenInitialized():
         _fetchKioskStatus();
+        break;
+      case PhoneNumberEntered():
+        _getEmployeeCandidates(event.phoneNumber);
+        break;
+      case EmployeeSelected():
+        _checkIn(event.employee);
         break;
     }
   }
 
   Future<void> _fetchKioskStatus() async {
-    _setUiState(PhoneNumberInputLoading());
+    _setUiState(Loading());
 
-    // Dummy data for testing
     const int restaurantId = 092;
     const String kioskCode = "FCT-092";
-    const String clientTime = "2026-02-01T08:40:12";
+    final String clientTime = DateTime.now().toIso8601String();
 
     final result = await _getKioskStatusUseCase.execute(
       restaurantId: restaurantId,
@@ -42,13 +57,67 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
 
     result.when(
       success: (kioskStatus) {
-        _setUiState(PhoneNumberInputSuccess(kioskStatus));
+        _setUiState(KioskStatusLoaded(kioskStatus));
       },
       failure: (code, data) {
-        _setUiState(PhoneNumberInputError('Failed to fetch kiosk status: $code'));
+        _setUiState(Error('Failed to fetch kiosk status: $code'));
       },
       error: (error) {
-        _setUiState(PhoneNumberInputError('Error fetching kiosk status: $error'));
+        _setUiState(Error('Error fetching kiosk status: $error'));
+      },
+    );
+  }
+
+  Future<void> _getEmployeeCandidates(String phoneNumber) async {
+    _setUiState(Loading());
+
+    const int restaurantId = 092;
+
+    final result = await _getEmployeeCandidatesUseCase.execute(
+      restaurantId: restaurantId,
+      phoneLastFour: phoneNumber,
+    );
+
+    result.when(
+      success: (lookup) {
+        if (lookup.matches.isEmpty) {
+          _setUiState(Error('해당 번호로 직원을 찾을 수 없습니다.'));
+        } else if (lookup.matches.length == 1) {
+          _checkIn(lookup.matches.first);
+        } else {
+          _setUiState(EmployeeCandidatesLoaded(lookup.matches));
+        }
+      },
+      failure: (code, data) {
+        _setUiState(Error('직원 조회에 실패했습니다: $code'));
+      },
+      error: (error) {
+        _setUiState(Error('직원 조회 중 오류가 발생했습니다: $error'));
+      },
+    );
+  }
+
+  Future<void> _checkIn(EmployeeMatch employee) async {
+    _setUiState(Loading());
+
+    final String clientTime = DateTime.now().toIso8601String();
+
+    final result = await _kioskCheckInUseCase.execute(
+      employeeId: employee.employeeId,
+      clientTime: clientTime,
+      restaurantId: 092,
+      kioskCode: 'FCT-092',
+    );
+
+    result.when(
+      success: (checkInResult) {
+        _setUiState(CheckInSuccess(checkInResult));
+      },
+      failure: (code, data) {
+        _setUiState(Error('체크인에 실패했습니다: $code'));
+      },
+      error: (error) {
+        _setUiState(Error('체크인 중 오류가 발생했습니다: $error'));
       },
     );
   }

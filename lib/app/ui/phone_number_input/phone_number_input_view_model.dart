@@ -111,7 +111,13 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
 
     result.when(
       success: (checkInResult) {
-        _setUiState(CheckInSuccess(checkInResult));
+        if (checkInResult.result == 'LOGGED') {
+          _setUiState(CheckInSuccess(checkInResult));
+        } else if (checkInResult.result == 'ALREADY_LOGGED') {
+          _setUiState(AlreadyLogged(checkInResult.message));
+        } else {
+          _setUiState(Error(checkInResult.message));
+        }
       },
       failure: (code, data) {
         _setUiState(Error('체크인에 실패했습니다: $code'));

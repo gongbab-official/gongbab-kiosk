@@ -27,6 +27,12 @@ class CheckInSuccess extends PhoneNumberInputUiState {
   CheckInSuccess(this.checkInResult);
 }
 
+class AlreadyLogged extends PhoneNumberInputUiState {
+  final String message;
+
+  AlreadyLogged(this.message);
+}
+
 class Error extends PhoneNumberInputUiState {
   final String message;
 

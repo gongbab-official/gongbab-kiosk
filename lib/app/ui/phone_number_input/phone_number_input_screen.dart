@@ -59,6 +59,11 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
       // Navigate to success screen
       context.push(AppRoutes.success);
       _resetPin();
+    } else if (state is AlreadyLogged) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(state.message)),
+      );
+      _resetPin();
     } else if (state is Error) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('오류: ${state.message}')),

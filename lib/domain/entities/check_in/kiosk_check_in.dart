@@ -6,8 +6,8 @@ class KioskCheckIn {
   final int mealLogId;
   final String mealType;
   final String mealDate;
-  final Employee employee;
-  final Company company;
+  final Employee? employee;
+  final Company? company;
   final String eatenAt;
   final String message;
 
@@ -16,8 +16,8 @@ class KioskCheckIn {
     required this.mealLogId,
     required this.mealType,
     required this.mealDate,
-    required this.employee,
-    required this.company,
+    this.employee,
+    this.company,
     required this.eatenAt,
     required this.message,
   });

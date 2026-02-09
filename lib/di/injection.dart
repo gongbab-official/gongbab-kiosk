@@ -4,6 +4,7 @@ import 'injection.config.dart'; // 코드 생성기가 생성할 파일
 import 'package:gongbab/domain/repositories/kiosk_repository.dart';
 import 'package:gongbab/domain/usecases/get_kiosk_status_usecase.dart';
 import 'package:gongbab/domain/usecases/get_employee_candidates_usecase.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:gongbab/domain/usecases/kiosk_check_in_usecase.dart'; // Import new use case
 
 final getIt = GetIt.instance;
@@ -33,4 +34,7 @@ abstract class RegisterModule {
   KioskCheckInUseCase kioskCheckInUseCase(KioskRepository repository) {
     return KioskCheckInUseCase(repository);
   }
+
+  @lazySingleton
+  Connectivity get connectivity => Connectivity();
 }

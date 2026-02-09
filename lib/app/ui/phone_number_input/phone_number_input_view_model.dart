@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gongbab/domain/usecases/get_employee_candidates_usecase.dart';
 import 'package:gongbab/domain/usecases/get_kiosk_status_usecase.dart';
@@ -12,11 +13,13 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
   final GetKioskStatusUseCase _getKioskStatusUseCase;
   final GetEmployeeCandidatesUseCase _getEmployeeCandidatesUseCase;
   final KioskCheckInUseCase _kioskCheckInUseCase;
+  final Connectivity _connectivity;
 
   PhoneNumberInputViewModel(
     this._getKioskStatusUseCase,
     this._getEmployeeCandidatesUseCase,
     this._kioskCheckInUseCase,
+    this._connectivity,
   );
 
   PhoneNumberInputUiState _uiState = Initial();
@@ -49,6 +52,9 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
     const String kioskCode = "FCT-092";
     final String clientTime = DateTime.now().toIso8601String();
 
+    final connectivityResult = await _connectivity.checkConnectivity();
+    final isWifiConnected = connectivityResult.contains(ConnectivityResult.wifi);
+
     final result = await _getKioskStatusUseCase.execute(
       restaurantId: restaurantId,
       kioskCode: kioskCode,
@@ -57,7 +63,7 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
 
     result.when(
       success: (kioskStatus) {
-        _setUiState(KioskStatusLoaded(kioskStatus));
+        _setUiState(KioskStatusLoaded(kioskStatus, isWifiConnected));
       },
       failure: (code, data) {
         _setUiState(Error('Failed to fetch kiosk status: $code'));

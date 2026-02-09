@@ -22,6 +22,11 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
   final int pinLength = 4;
   late final PhoneNumberInputViewModel _viewModel;
 
+  String _serverStatusText = 'SERVER OFFLINE';
+  Color _serverStatusColor = const Color(0xFFef4444); // Red
+  String _wifiStatusText = 'DISCONNECTED';
+  Color _wifiStatusColor = const Color(0xFFef4444); // Red
+
   @override
   void initState() {
     super.initState();
@@ -34,8 +39,6 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
   @override
   void dispose() {
     _viewModel.removeListener(_onViewModelChanged);
-    // GetIt might manage the lifecycle, but if not, manual disposal is good practice.
-    // _viewModel.dispose(); 
     super.dispose();
   }
 
@@ -46,13 +49,30 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
 
     if (state is Loading) {
       // Optionally show a loading indicator
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('처리 중...')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('처리 중...')),
+      // );
     } else if (state is KioskStatusLoaded) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('키오스크 상태: ${state.kioskStatus.status}')),
-      );
+      setState(() {
+        if (state.kioskStatus.status == 'OK') {
+          _serverStatusText = 'SERVER ONLINE';
+          _serverStatusColor = const Color(0xFF10b981); // Green
+        } else {
+          _serverStatusText = 'SERVER OFFLINE';
+          _serverStatusColor = const Color(0xFFef4444); // Red
+        }
+
+        if (state.isWifiConnected) {
+          _wifiStatusText = 'CONNECTED';
+          _wifiStatusColor = const Color(0xFF6b7280); // Gray
+        } else {
+          _wifiStatusText = 'DISCONNECTED';
+          _wifiStatusColor = const Color(0xFFef4444); // Red
+        }
+      });
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   SnackBar(content: Text('키오스크 상태: ${state.kioskStatus.status}')),
+      // );
     } else if (state is EmployeeCandidatesLoaded) {
       _showEmployeeSelectionDialog(context, state.employees);
     } else if (state is CheckInSuccess) {
@@ -279,8 +299,8 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                 children: [
                   _buildStatusItem(
                     Icons.circle,
-                    'SERVER ONLINE',
-                    const Color(0xFF10b981),
+                    _serverStatusText,
+                    _serverStatusColor,
                   ),
                   Text(
                     'KIOSK ID: FCT-092',
@@ -291,8 +311,8 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                   ),
                   _buildStatusItem(
                     Icons.wifi,
-                    'CONNECTED',
-                    const Color(0xFF6b7280),
+                    _wifiStatusText,
+                    _wifiStatusColor,
                   ),
                 ],
               ),

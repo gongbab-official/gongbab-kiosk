@@ -11,8 +11,9 @@ class Loading extends PhoneNumberInputUiState {}
 
 class KioskStatusLoaded extends PhoneNumberInputUiState {
   final KioskStatus kioskStatus;
+  final bool isWifiConnected;
 
-  KioskStatusLoaded(this.kioskStatus);
+  KioskStatusLoaded(this.kioskStatus, this.isWifiConnected);
 }
 
 class EmployeeCandidatesLoaded extends PhoneNumberInputUiState {

@@ -1,15 +1,13 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gongbab/app/router/app_routes.dart';
 import 'package:gongbab/app/ui/phone_number_input/phone_number_input_view_model.dart';
 import 'package:get_it/get_it.dart';
-import 'package:gongbab/app/ui/phone_number_input/phone_number_input_ui_state.dart'; // Import the new state file
-import 'package:gongbab/app/ui/phone_number_input/phone_number_input_event.dart'; // Import the new event file
+import 'package:gongbab/app/ui/phone_number_input/phone_number_input_ui_state.dart';
+import 'package:gongbab/app/ui/phone_number_input/phone_number_input_event.dart';
+import 'package:gongbab/domain/entities/lookup/employee_match.dart';
 
-import '../select_name/fake_worker.dart';
 import '../select_name/select_name_dialog.dart';
 
 class PhoneNumberInputScreen extends StatefulWidget {
@@ -29,29 +27,43 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
     super.initState();
     _viewModel = GetIt.I<PhoneNumberInputViewModel>();
     _viewModel.addListener(_onViewModelChanged);
+    // Trigger the initial event
+    _viewModel.onEvent(ScreenInitialized());
   }
 
   @override
   void dispose() {
     _viewModel.removeListener(_onViewModelChanged);
-    _viewModel.dispose();
+    // GetIt might manage the lifecycle, but if not, manual disposal is good practice.
+    // _viewModel.dispose(); 
     super.dispose();
   }
 
   void _onViewModelChanged() {
     final state = _viewModel.uiState;
-    if (state is PhoneNumberInputLoading) {
+    // Hide any existing snackbars
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    if (state is Loading) {
+      // Optionally show a loading indicator
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Fetching Kiosk Status...')),
+        const SnackBar(content: Text('처리 중...')),
       );
-    } else if (state is PhoneNumberInputSuccess) {
+    } else if (state is KioskStatusLoaded) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Kiosk Status Success: ${state.kioskStatus.status}, ${state.kioskStatus.serverTime}')),
+        SnackBar(content: Text('키오스크 상태: ${state.kioskStatus.status}')),
       );
-    } else if (state is PhoneNumberInputError) {
+    } else if (state is EmployeeCandidatesLoaded) {
+      _showEmployeeSelectionDialog(context, state.employees);
+    } else if (state is CheckInSuccess) {
+      // Navigate to success screen
+      context.push(AppRoutes.success);
+      _resetPin();
+    } else if (state is Error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Kiosk Status Error: ${state.message}')),
+        SnackBar(content: Text('오류: ${state.message}')),
       );
+      _resetPin();
     }
   }
 
@@ -73,64 +85,34 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
 
   void onOkPressed() {
     if (pin.length == pinLength) {
-      // For testing: randomly show dialog or navigate to success
-      final random = Random();
-      if (random.nextBool()) {
-        // Navigate to success screen
-        context.push(AppRoutes.success);
-      } else {
-        // Show worker selection dialog
-        _showWorkerSelectionDialog(context);
-      }
-
-      // Reset after action
-      setState(() {
-        pin = '';
-      });
+      _viewModel.onEvent(PhoneNumberEntered(pin));
     }
   }
+  
+  void _resetPin() {
+    setState(() {
+      pin = '';
+    });
+  }
 
-  void _showWorkerSelectionDialog(BuildContext context) {
-    final workers = [
-      Worker(
-        name: '김철수',
-        employeeId: '2023-1234',
-        department: '조립1팀',
-      ),
-      Worker(
-        name: '김철수',
-        employeeId: '2021-5678',
-        department: '품질관리',
-      ),
-      Worker(
-        name: '김철수',
-        employeeId: '2019-9012',
-        department: '물류센터',
-      ),
-    ];
-
+  void _showEmployeeSelectionDialog(BuildContext context, List<EmployeeMatch> employees) {
     showDialog(
       context: context,
-      barrierDismissible: true,
+      barrierDismissible: true, // Or false if selection is mandatory
       builder: (context) => SelectNameDialog(
-        workers: workers,
-        onWorkerSelected: (worker) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                '선택됨: ${worker.name} (${worker.employeeId})',
-              ),
-              backgroundColor: const Color(0xFF3b82f6),
-            ),
-          );
+        employees: employees,
+        onEmployeeSelected: (employee) {
+          _viewModel.onEvent(EmployeeSelected(employee));
         },
       ),
-    );
+    ).then((_) => _resetPin()); // Reset pin when dialog is dismissed
   }
 
 
   @override
   Widget build(BuildContext context) {
+    // The build method remains largely the same, so it's omitted for brevity.
+    // The key changes are in the logic (initState, dispose, event handlers), not the UI layout.
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -183,14 +165,6 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                     ),
                   ),
                   SizedBox(height: 8.h),
-                  // Text(
-                  //   'INDUSTRIAL RESTAURANT SYSTEM V1.0',
-                  //   style: TextStyle(
-                  //     fontSize: 12.sp,
-                  //     color: const Color(0xFF6b7280),
-                  //     letterSpacing: 1.2,
-                  //   ),
-                  // ),
                   const Spacer(),
                   // PIN Display
                   Padding(
@@ -235,15 +209,6 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                     ),
                   ),
                   const Spacer(),
-                  // Text(
-                  //   'EMPLOYEE VERIFICATION REQUIRED',
-                  //   style: TextStyle(
-                  //     fontSize: 12.sp,
-                  //     color: const Color(0xFF6b7280),
-                  //     letterSpacing: 2,
-                  //   ),
-                  // ),
-                  // const Spacer(),
                 ],
               ),
             ),
@@ -329,12 +294,6 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _viewModel.onEvent(FetchKioskStatus());
-        },
-        child: const Icon(Icons.refresh),
       ),
     );
   }

@@ -26,19 +26,6 @@ class ApiService {
       fromJson: LoginModel.fromJson,
     );
   }
-
-  Future<Result<LoginModel>> refreshToken({
-    required String refreshToken,
-  }) async {
-    return _appApiClient.request(
-      method: RestMethod.post,
-      path: '/api/v1/auth/refresh',
-      data: {
-        'refreshToken': refreshToken,
-      },
-      fromJson: LoginModel.fromJson,
-    );
-  }
   // ------------------------------------
 
   // ------------kiosk---------------------

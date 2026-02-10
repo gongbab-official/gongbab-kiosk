@@ -5,8 +5,4 @@ abstract class AuthRepository {
   Future<Result<LoginEntity>> login({
     required String code,
   });
-
-  Future<Result<LoginEntity>> refreshToken({
-    required String refreshToken,
-  });
 }

@@ -21,16 +21,4 @@ class AuthRepositoryImpl implements AuthRepository { // AuthRepository 인터페
       error: (error) => Result.error(error),
     );
   }
-
-  @override
-  Future<Result<LoginEntity>> refreshToken({
-    required String refreshToken,
-  }) async {
-    final result = await _apiService.refreshToken(refreshToken: refreshToken);
-    return result.when(
-      success: (model) => Result.success(model.toEntity()),
-      failure: (code, data) => Result.failure(code, data),
-      error: (error) => Result.error(error),
-    );
-  }
 }

@@ -1,3 +1,4 @@
+import 'package:gongbab/data/device/device_info_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gongbab/app/ui/login/login_event.dart';
 import 'package:gongbab/app/ui/login/login_ui_state.dart';
@@ -9,20 +10,26 @@ import 'package:gongbab/data/auth/auth_token_manager.dart';
 class LoginViewModel extends ChangeNotifier {
   final LoginUseCase _loginUseCase;
   final AuthTokenManager _authTokenManager;
+  final DeviceInfoService _deviceInfoService; // Injected service
 
   LoginUiState _uiState = Initial();
 
   LoginUiState get uiState => _uiState;
 
-  LoginViewModel(this._loginUseCase, this._authTokenManager);
+  LoginViewModel(this._loginUseCase, this._authTokenManager, this._deviceInfoService); // Updated constructor
 
   Future<void> onEvent(LoginEvent event) async {
     if (event is LoginButtonPressed) {
       _uiState = Loading();
       notifyListeners();
 
+      final deviceId = await _deviceInfoService.getDeviceId();
+      final deviceType = _deviceInfoService.getDeviceType();
+
       final result = await _loginUseCase.execute(
         code: '${event.phoneNumber}${event.password}',
+        deviceType: deviceType,
+        deviceId: deviceId,
       );
 
       result.when(
@@ -34,19 +41,21 @@ class LoginViewModel extends ChangeNotifier {
               // as it's not directly in LoginEntity.restaurant
               // For now, I'll use the hardcoded value from PhoneNumberInputViewModel
               // This should ideally come from the LoginModel or a config.
-              'FCT-092',
+              loginEntity.kioskCode ?? 'UNDEFINED_KIOSK_CODE',
             );
           }
           _uiState = Success(loginEntity);
+          notifyListeners();
         },
         failure: (String success, Map<String, dynamic>? data) {
           _uiState = Error('Login failed with code: $success');
+          notifyListeners();
         },
         error: (message) {
           _uiState = Error(message);
+          notifyListeners();
         },
       );
-      notifyListeners();
     }
   }
 

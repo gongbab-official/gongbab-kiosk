@@ -19,6 +19,7 @@ import '../app/ui/login/login_view_model.dart' as _i1050;
 import '../app/ui/phone_number_input/phone_number_input_view_model.dart'
     as _i513;
 import '../data/auth/auth_token_manager.dart' as _i702;
+import '../data/device/device_info_service.dart' as _i120;
 import '../data/network/api_service.dart' as _i589;
 import '../data/network/app_api_client.dart' as _i133;
 import '../data/network/auth_interceptor.dart' as _i803;
@@ -50,6 +51,7 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.lazySingleton<_i895.Connectivity>(() => registerModule.connectivity);
     gh.lazySingleton<_i361.Dio>(() => registerModule.dio);
+    gh.lazySingleton<_i120.DeviceInfoService>(() => _i120.DeviceInfoService());
     gh.lazySingleton<_i702.AuthTokenManager>(
         () => _i702.AuthTokenManager(gh<_i460.SharedPreferences>()));
     gh.singleton<_i559.AppRouter>(
@@ -75,6 +77,7 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i1050.LoginViewModel>(() => _i1050.LoginViewModel(
           gh<_i634.LoginUseCase>(),
           gh<_i702.AuthTokenManager>(),
+          gh<_i120.DeviceInfoService>(),
         ));
     gh.lazySingleton<_i5.GetKioskStatusUseCase>(() =>
         registerModule.getKioskStatusUseCase(gh<_i587.KioskRepository>()));

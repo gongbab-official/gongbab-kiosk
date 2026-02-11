@@ -11,6 +11,7 @@ import 'package:gongbab/domain/usecases/login_usecase.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:gongbab/data/auth/auth_token_manager.dart';
 import 'package:dio/dio.dart'; // New import
+import 'package:gongbab/data/device/device_info_service.dart'; // New import
 
 final getIt = GetIt.instance;
 

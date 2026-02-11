@@ -13,6 +13,7 @@ LoginModel _$LoginModelFromJson(Map<String, dynamic> json) => LoginModel(
           ? null
           : RestaurantModel.fromJson(
               json['restaurant'] as Map<String, dynamic>),
+      kioskCode: json['kioskCode'] as String?,
     );
 
 Map<String, dynamic> _$LoginModelToJson(LoginModel instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$LoginModelToJson(LoginModel instance) =>
       'accessToken': instance.accessToken,
       'refreshToken': instance.refreshToken,
       'restaurant': instance.restaurant,
+      'kioskCode': instance.kioskCode,
     };

@@ -13,8 +13,14 @@ class AuthRepositoryImpl implements AuthRepository { // AuthRepository 인터페
   @override
   Future<Result<LoginEntity>> login({
     required String code,
+    required String deviceType,
+    required String deviceId,
   }) async {
-    final result = await _apiService.login(code: code);
+    final result = await _apiService.login(
+      code: code,
+      deviceType: deviceType,
+      deviceId: deviceId,
+    );
     return result.when(
       success: (model) => Result.success(model.toEntity()),
       failure: (code, data) => Result.failure(code, data),

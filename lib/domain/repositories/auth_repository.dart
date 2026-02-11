@@ -4,5 +4,7 @@ import 'package:gongbab/domain/utils/result.dart';
 abstract class AuthRepository {
   Future<Result<LoginEntity>> login({
     required String code,
+    required String deviceType,
+    required String deviceId,
   });
 }

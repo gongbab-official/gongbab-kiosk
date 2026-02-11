@@ -11,8 +11,14 @@ class LoginUseCase {
 
   Future<Result<LoginEntity>> execute({
     required String code,
+    required String deviceType,
+    required String deviceId,
   }) async {
-    final result = await repository.login(code: code);
+    final result = await repository.login(
+      code: code,
+      deviceType: deviceType,
+      deviceId: deviceId,
+    );
     return result.when(
       success: (loginEntity) async {
         await authTokenManager.saveTokens(loginEntity.accessToken, loginEntity.refreshToken);

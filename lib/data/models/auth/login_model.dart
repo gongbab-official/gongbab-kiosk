@@ -9,11 +9,13 @@ class LoginModel {
   final String accessToken;
   final String refreshToken;
   final RestaurantModel? restaurant;
+  final String? kioskCode;
 
   LoginModel({
     required this.accessToken,
     required this.refreshToken,
     this.restaurant,
+    this.kioskCode,
   });
 
   factory LoginModel.fromJson(Map<String, dynamic> json) => _$LoginModelFromJson(json);
@@ -25,6 +27,7 @@ class LoginModel {
       accessToken: accessToken,
       refreshToken: refreshToken,
       restaurant: restaurant?.toEntity(),
+      kioskCode: kioskCode,
     );
   }
 }

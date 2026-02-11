@@ -94,8 +94,8 @@ void main() {
 
         when(mockAuthTokenManager.getRefreshToken()).thenReturn('old_refresh_token');
         when(mockDio.post(
-          '/api/v1/auth/refresh',
-          data: anyNamed('data'),
+          any, // Use any for path
+          data: anyNamed('data'), // Use anyNamed for data
         )).thenAnswer((_) => Future.value(Response(
               requestOptions: RequestOptions(path: '/api/v1/auth/refresh'),
               data: newTokensResponse,
@@ -123,7 +123,15 @@ void main() {
         verifyNever(mockErrorHandler.next(any));
 
         // Capture the arguments passed to mockDio.post
-        verify(mockDio.post(any, data: any)).called(1);
+        final postVerification = verify(mockDio.post(
+          captureAny, // Capture the path
+          data: captureAnyNamed('data'), // Capture the data
+        ));
+        postVerification.called(1);
+
+        // Assert the captured path and data
+        expect(postVerification.captured.first, '/api/v1/auth/refresh');
+        expect(postVerification.captured.last, {'refreshToken': 'old_refresh_token'});
       });
 
       test(

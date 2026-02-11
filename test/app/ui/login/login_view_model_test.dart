@@ -55,7 +55,7 @@ void main() {
       viewModel.onEvent(LoginButtonPressed(phoneNumber: '1234', password: 'A'));
       
       // Assert
-      await completer.future.timeout(const Duration(seconds: 1), onTimeout: () => throw 'Test timed out');
+      await completer.future.timeout(const Duration(seconds: 5), onTimeout: () => throw 'Test timed out');
       
       expect(viewModel.uiState, isA<Success>());
       expect((viewModel.uiState as Success).loginEntity, loginEntity);

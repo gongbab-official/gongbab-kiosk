@@ -9,18 +9,20 @@ import 'package:gongbab/domain/entities/auth/login_entity.dart';
 import 'package:gongbab/domain/entities/auth/restaurant_entity.dart';
 import 'package:gongbab/domain/utils/result.dart' as result_util;
 
-import 'mocks.mocks.dart';
-import '../../../test_helper.dart';
+import '../../../test_mocks.mocks.dart';
+import '../../../test_helper.dart'; // Ensure this is present
 
 void main() {
   late LoginViewModel viewModel;
   late MockLoginUseCase mockLoginUseCase;
   late MockAuthTokenManager mockAuthTokenManager;
+  late MockDeviceInfoService mockDeviceInfoService;
 
   const loginEntity = LoginEntity(
     accessToken: 'test_access',
     refreshToken: 'test_refresh',
     restaurant: RestaurantEntity(id: 1, name: 'Test Restaurant'),
+    kioskCode: 'TEST_KIOSK_CODE',
   );
 
   setUpAll(() {
@@ -30,7 +32,11 @@ void main() {
   setUp(() {
     mockLoginUseCase = MockLoginUseCase();
     mockAuthTokenManager = MockAuthTokenManager();
-    viewModel = LoginViewModel(mockLoginUseCase, mockAuthTokenManager);
+    mockDeviceInfoService = MockDeviceInfoService();
+    viewModel = LoginViewModel(mockLoginUseCase, mockAuthTokenManager, mockDeviceInfoService);
+
+    when(mockDeviceInfoService.getDeviceId()).thenAnswer((_) async => 'test_device_id');
+    when(mockDeviceInfoService.getDeviceType()).thenReturn('KIOSK');
   });
 
   group('LoginViewModel', () {
@@ -46,8 +52,11 @@ void main() {
           if (!completer.isCompleted) completer.complete();
         }
       });
-      when(mockLoginUseCase.execute(code: anyNamed('code')))
-          .thenAnswer((_) async => result_util.Result.success(loginEntity));
+      when(mockLoginUseCase.execute(
+        code: anyNamed('code'),
+        deviceType: anyNamed('deviceType'),
+        deviceId: anyNamed('deviceId'),
+      )).thenAnswer((_) async => result_util.Result.success(loginEntity));
       when(mockAuthTokenManager.saveRestaurantInfo(any, any)).thenAnswer((_) => Future.value());
       when(mockAuthTokenManager.saveTokens(any, any)).thenAnswer((_) => Future.value());
 
@@ -59,7 +68,7 @@ void main() {
       
       expect(viewModel.uiState, isA<Success>());
       expect((viewModel.uiState as Success).loginEntity, loginEntity);
-      verify(mockAuthTokenManager.saveRestaurantInfo(loginEntity.restaurant!.id, 'FCT-092')).called(1);
+      verify(mockAuthTokenManager.saveRestaurantInfo(loginEntity.restaurant!.id, loginEntity.kioskCode!)).called(1);
       verify(mockAuthTokenManager.saveTokens(loginEntity.accessToken, loginEntity.refreshToken)).called(1);
     });
 
@@ -71,8 +80,11 @@ void main() {
           if (!completer.isCompleted) completer.complete();
         }
       });
-      when(mockLoginUseCase.execute(code: anyNamed('code')))
-          .thenAnswer((_) async => result_util.Result.failure('LOGIN_FAILED', null));
+      when(mockLoginUseCase.execute(
+        code: anyNamed('code'),
+        deviceType: anyNamed('deviceType'),
+        deviceId: anyNamed('deviceId'),
+      )).thenAnswer((_) async => result_util.Result.failure('LOGIN_FAILED', null));
 
       // Act
       viewModel.onEvent(LoginButtonPressed(phoneNumber: '1234', password: 'A'));
@@ -92,8 +104,11 @@ void main() {
           if (!completer.isCompleted) completer.complete();
         }
       });
-      when(mockLoginUseCase.execute(code: anyNamed('code')))
-          .thenAnswer((_) async => result_util.Result.error('Network error'));
+      when(mockLoginUseCase.execute(
+        code: anyNamed('code'),
+        deviceType: anyNamed('deviceType'),
+        deviceId: anyNamed('deviceId'),
+      )).thenAnswer((_) async => result_util.Result.error('Network error'));
 
       // Act
       viewModel.onEvent(LoginButtonPressed(phoneNumber: '1234', password: 'A'));
@@ -107,8 +122,11 @@ void main() {
 
     test('resetState sets state to Initial', () {
       // Arrange
-      when(mockLoginUseCase.execute(code: anyNamed('code')))
-          .thenAnswer((_) async => result_util.Result.success(loginEntity));
+      when(mockLoginUseCase.execute(
+        code: anyNamed('code'),
+        deviceType: anyNamed('deviceType'),
+        deviceId: anyNamed('deviceId'),
+      )).thenAnswer((_) async => result_util.Result.success(loginEntity));
       when(mockAuthTokenManager.saveRestaurantInfo(any, any)).thenAnswer((_) => Future.value());
       when(mockAuthTokenManager.saveTokens(any, any)).thenAnswer((_) => Future.value());
 

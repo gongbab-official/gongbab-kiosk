@@ -66,10 +66,11 @@ class CustomAlertDialog extends StatelessWidget {
                       style: TextButton.styleFrom(
                         backgroundColor: const Color(0xFFEF4444),
                         foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r)),
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
                       ),
-                      child: Text(leftButtonText!),
+                      child: Text(leftButtonText!, style: TextStyle(fontSize: 14.sp),),
                     ),
                   ),
                   SizedBox(width: 8.w),
@@ -82,10 +83,11 @@ class CustomAlertDialog extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF3b82f6),
                         foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.r)),
+                        padding: EdgeInsets.symmetric(vertical: 16.h),
                       ),
-                      child: Text(rightButtonText),
+                      child: Text(rightButtonText, style: TextStyle(fontSize: 14.sp),),
                     ),
                   ),
                 ],
@@ -101,10 +103,11 @@ class CustomAlertDialog extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF3b82f6),
                     foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
-                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.r)),
+                    padding: EdgeInsets.symmetric(vertical: 16.h),
                   ),
-                  child: Text(rightButtonText),
+                  child: Text(rightButtonText, style: TextStyle(fontSize: 14.sp)),
                 ),
               ),
           ],
@@ -113,4 +116,3 @@ class CustomAlertDialog extends StatelessWidget {
     );
   }
 }
-

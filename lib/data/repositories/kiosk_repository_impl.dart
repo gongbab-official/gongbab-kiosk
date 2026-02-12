@@ -32,7 +32,7 @@ class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터
         status: model.status,
         serverTime: model.serverTime,
       )),
-      failure: (success, data) => Result.failure(success, data),
+      failure: (success, error) => Result.failure(success, error),
       error: (error) => Result.error(error),
     );
   }
@@ -58,7 +58,7 @@ class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터
             .toList(),
         count: model.count,
       )),
-      failure: (success, data) => Result.failure(success, data),
+      failure: (success, error) => Result.failure(success, error),
       error: (error) => Result.error(error),
     );
   }
@@ -93,7 +93,7 @@ class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터
         eatenAt: model.eatenAt,
         message: model.message,
       )),
-      failure: (success, data) => Result.failure(success, data),
+      failure: (success, error) => Result.failure(success, error),
       error: (error) => Result.error(error),
     );
   }

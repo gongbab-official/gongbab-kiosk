@@ -4,20 +4,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CustomAlertDialog extends StatelessWidget {
   final String title;
   final String? content;
-  final Widget? leftButton;
-  final Widget rightButton;
+  final String? leftButtonText;
+  final VoidCallback? onLeftButtonPressed;
+  final String rightButtonText;
+  final VoidCallback onRightButtonPressed;
 
   const CustomAlertDialog({
     super.key,
     required this.title,
     this.content,
-    this.leftButton,
-    required this.rightButton,
+    this.leftButtonText,
+    this.onLeftButtonPressed,
+    required this.rightButtonText,
+    required this.onRightButtonPressed,
   });
 
   @override
   Widget build(BuildContext context) {
     return Dialog(
+      backgroundColor: const Color(0xFF1a1f2e),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.r),
       ),
@@ -33,6 +38,7 @@ class CustomAlertDialog extends StatelessWidget {
               style: TextStyle(
                 fontSize: 18.sp,
                 fontWeight: FontWeight.w700,
+                color: Colors.white,
               ),
             ),
             if (content != null) ...[
@@ -43,24 +49,68 @@ class CustomAlertDialog extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
-                  color: Colors.black.withOpacity(0.6),
+                  color: Colors.white,
                 ),
               ),
             ],
             SizedBox(height: 24.h),
-            if (leftButton != null)
+            if (leftButtonText != null)
               Row(
                 children: [
-                  Expanded(child: leftButton!),
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        onLeftButtonPressed?.call();
+                      },
+                      style: TextButton.styleFrom(
+                        backgroundColor: const Color(0xFFEF4444),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                      ),
+                      child: Text(leftButtonText!),
+                    ),
+                  ),
                   SizedBox(width: 8.w),
-                  Expanded(child: rightButton),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        onRightButtonPressed.call();
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF3b82f6),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                        padding: EdgeInsets.symmetric(vertical: 12.h),
+                      ),
+                      child: Text(rightButtonText),
+                    ),
+                  ),
                 ],
               )
             else
-              rightButton,
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    onRightButtonPressed.call();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF3b82f6),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                    padding: EdgeInsets.symmetric(vertical: 12.h),
+                  ),
+                  child: Text(rightButtonText),
+                ),
+              ),
           ],
         ),
       ),
     );
   }
 }
+

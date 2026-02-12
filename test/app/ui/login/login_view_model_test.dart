@@ -91,7 +91,7 @@ void main() {
 
       // Assert
       expect(viewModel.uiState, isA<Error>());
-      expect((viewModel.uiState as Error).event, 'Login failed with code: LOGIN_FAILED');
+      expect((viewModel.uiState as Error), 'Login failed with code: LOGIN_FAILED');
       verifyNever(mockAuthTokenManager.saveRestaurantInfo(any, any));
     });
 
@@ -115,7 +115,7 @@ void main() {
 
       // Assert
       expect(viewModel.uiState, isA<Error>());
-      expect((viewModel.uiState as Error).event, 'Network error');
+      expect((viewModel.uiState as Error), 'Network error');
       verifyNever(mockAuthTokenManager.saveRestaurantInfo(any, any));
     });
 

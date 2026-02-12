@@ -1,4 +1,5 @@
 import 'package:gongbab/domain/entities/auth/login_entity.dart';
+import 'package:gongbab/app/ui/login/login_event.dart';
 
 abstract class LoginUiState {}
 
@@ -12,8 +13,16 @@ class Success extends LoginUiState {
   Success(this.loginEntity);
 }
 
-class Error extends LoginUiState {
-  final String message;
+// Represents business logic failures (e.g., INVALID_ADMIN_CODE)
+class Failure extends LoginUiState {
+  final LoginEvent event; // Holds ShowAlertDialog
 
-  Error(this.message);
+  Failure(this.event);
+}
+
+// Represents general system/network errors
+class GeneralError extends LoginUiState {
+  final LoginEvent event; // Holds ShowSnackBar
+
+  GeneralError(this.event);
 }

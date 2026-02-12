@@ -10,13 +10,13 @@ import 'package:gongbab/data/auth/auth_token_manager.dart';
 class LoginViewModel extends ChangeNotifier {
   final LoginUseCase _loginUseCase;
   final AuthTokenManager _authTokenManager;
-  final DeviceInfoService _deviceInfoService; // Injected service
+  final DeviceInfoService _deviceInfoService;
 
   LoginUiState _uiState = Initial();
 
   LoginUiState get uiState => _uiState;
 
-  LoginViewModel(this._loginUseCase, this._authTokenManager, this._deviceInfoService); // Updated constructor
+  LoginViewModel(this._loginUseCase, this._authTokenManager, this._deviceInfoService);
 
   Future<void> onEvent(LoginEvent event) async {
     if (event is LoginButtonPressed) {
@@ -26,7 +26,7 @@ class LoginViewModel extends ChangeNotifier {
       final deviceId = await _deviceInfoService.getDeviceId();
 
       final result = await _loginUseCase.execute(
-        code: '${event.phoneNumber}${event.password}',
+        code: event.code.toUpperCase(),
         deviceType: 'KIOSK',
         deviceId: deviceId,
       );
@@ -36,22 +36,45 @@ class LoginViewModel extends ChangeNotifier {
           if (loginEntity.restaurant != null) {
             await _authTokenManager.saveRestaurantInfo(
               loginEntity.restaurant!.id,
-              // Assuming kioskCode is derived or hardcoded for now,
-              // as it's not directly in LoginEntity.restaurant
-              // For now, I'll use the hardcoded value from PhoneNumberInputViewModel
-              // This should ideally come from the LoginModel or a config.
               loginEntity.kioskCode ?? 'UNDEFINED_KIOSK_CODE',
             );
           }
           _uiState = Success(loginEntity);
           notifyListeners();
         },
-        failure: (String success, Map<String, dynamic>? data) {
-          _uiState = Error('Login failed with code: $success');
+        failure: (bool success, Map<String, dynamic>? error) {
+          final errorCode = error?['code'] as String?;
+          final errorMessage = error?['message'] as String?; // Fixed extraction
+          final errorDetails = error?['details'] as List<dynamic>?; // Fixed extraction
+
+          if (errorCode == 'VALIDATION_ERROR') {
+            _uiState = Failure(ShowAlertDialog( // Changed to Failure
+              title: '로그인 실패',
+              content: errorDetails != null && errorDetails.isNotEmpty // Use errorDetails if available
+                  ? errorDetails[0]['message'] as String?
+                  : '코드 형식이 올바르지 않습니다',
+              rightButtonText: '확인',
+              onRightButtonPressed: () {}, // Handled by screen to pop
+            ));
+          } else if (errorCode == 'INVALID_ADMIN_CODE') {
+            _uiState = Failure(ShowAlertDialog( // Changed to Failure
+              title: '로그인 실패',
+              content: '관리자 코드를 확인한 후 다시 로그인해주세요',
+              rightButtonText: '확인',
+              onRightButtonPressed: () {}, // Handled by screen to pop
+            ));
+          } else {
+            _uiState = Failure(ShowAlertDialog( // Changed to Failure
+              title: '로그인 실패',
+              content: errorMessage ?? '알 수 없는 오류가 발생했습니다.', // Use errorMessage
+              rightButtonText: '확인',
+              onRightButtonPressed: () {}, // Handled by screen to pop
+            ));
+          }
           notifyListeners();
         },
         error: (message) {
-          _uiState = Error(message);
+          _uiState = GeneralError(ShowSnackBar(message: message)); // Changed to GeneralError
           notifyListeners();
         },
       );
@@ -63,3 +86,4 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 }
+

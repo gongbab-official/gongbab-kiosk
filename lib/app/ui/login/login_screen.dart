@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gongbab/app/ui/common_widgets/custom_alert_dialog.dart'; // Import CustomAlertDialog
 import 'package:gongbab/app/ui/login/login_event.dart';
 import 'package:gongbab/app/ui/login/login_ui_state.dart';
 import 'package:gongbab/app/ui/login/login_view_model.dart';
@@ -63,8 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _onLogin() {
     if (currentIndex == 5) {
       // All inputs filled, proceed with login
-      String pin = inputs.sublist(0, 4).join();
-      String alphabet = inputs[4]!;
+      String code = inputs.join(); // Combine all inputs into a single code
 
       // Unfocus all fields to hide keyboard
       for (var focusNode in _focusNodes) {
@@ -72,8 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
 
       _loginViewModel.onEvent(LoginButtonPressed(
-        phoneNumber: pin, // Assuming pin is phoneNumber for now
-        password: alphabet.toUpperCase(), // Assuming alphabet is password for now
+        code: code,
       ));
     }
   }
@@ -97,13 +96,38 @@ class _LoginScreenState extends State<LoginScreen> {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 context.go(AppRoutes.phoneNumberInput); // Placeholder for actual home route
               });
-            } else if (uiState is Error) {
-              // Show error message
+            } else if (uiState is Failure) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(uiState.message)),
-                );
-                _loginViewModel.resetState(); // Reset state after showing error
+                if (uiState.event is ShowAlertDialog) {
+                  final alertDialogEvent = uiState.event as ShowAlertDialog;
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext dialogContext) {
+                      return CustomAlertDialog(
+                        title: alertDialogEvent.title,
+                        content: alertDialogEvent.content,
+                        leftButtonText: alertDialogEvent.leftButtonText,
+                        onLeftButtonPressed: alertDialogEvent.onLeftButtonPressed,
+                        rightButtonText: alertDialogEvent.rightButtonText,
+                        onRightButtonPressed: alertDialogEvent.onRightButtonPressed,
+                      );
+                    },
+                  );
+                }
+                _loginViewModel.resetState(); // Reset state after handling
+              });
+            } else if (uiState is GeneralError) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (uiState.event is ShowSnackBar) {
+                  final snackBarEvent = uiState.event as ShowSnackBar;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(snackBarEvent.message),
+                      backgroundColor: snackBarEvent.backgroundColor,
+                    ),
+                  );
+                }
+                _loginViewModel.resetState(); // Reset state after handling
               });
             }
 

@@ -36,7 +36,6 @@ void main() {
     viewModel = LoginViewModel(mockLoginUseCase, mockAuthTokenManager, mockDeviceInfoService);
 
     when(mockDeviceInfoService.getDeviceId()).thenAnswer((_) async => 'test_device_id');
-    when(mockDeviceInfoService.getDeviceType()).thenReturn('KIOSK');
   });
 
   group('LoginViewModel', () {
@@ -61,7 +60,7 @@ void main() {
       when(mockAuthTokenManager.saveTokens(any, any)).thenAnswer((_) => Future.value());
 
       // Act
-      viewModel.onEvent(LoginButtonPressed(phoneNumber: '1234', password: 'A'));
+      viewModel.onEvent(LoginButtonPressed(code: '1234A'));
       
       // Assert
       await completer.future.timeout(const Duration(seconds: 5), onTimeout: () => throw 'Test timed out');
@@ -84,15 +83,15 @@ void main() {
         code: anyNamed('code'),
         deviceType: anyNamed('deviceType'),
         deviceId: anyNamed('deviceId'),
-      )).thenAnswer((_) async => result_util.Result.failure('LOGIN_FAILED', null));
+      )).thenAnswer((_) async => result_util.Result.failure(false, null));
 
       // Act
-      viewModel.onEvent(LoginButtonPressed(phoneNumber: '1234', password: 'A'));
+      viewModel.onEvent(LoginButtonPressed(code: '1234A'));
       await completer.future.timeout(const Duration(seconds: 1), onTimeout: () => throw 'Test timed out');
 
       // Assert
       expect(viewModel.uiState, isA<Error>());
-      expect((viewModel.uiState as Error).message, 'Login failed with code: LOGIN_FAILED');
+      expect((viewModel.uiState as Error).event, 'Login failed with code: LOGIN_FAILED');
       verifyNever(mockAuthTokenManager.saveRestaurantInfo(any, any));
     });
 
@@ -111,12 +110,12 @@ void main() {
       )).thenAnswer((_) async => result_util.Result.error('Network error'));
 
       // Act
-      viewModel.onEvent(LoginButtonPressed(phoneNumber: '1234', password: 'A'));
+      viewModel.onEvent(LoginButtonPressed( code: '1234A'));
       await completer.future.timeout(const Duration(seconds: 1), onTimeout: () => throw 'Test timed out');
 
       // Assert
       expect(viewModel.uiState, isA<Error>());
-      expect((viewModel.uiState as Error).message, 'Network error');
+      expect((viewModel.uiState as Error).event, 'Network error');
       verifyNever(mockAuthTokenManager.saveRestaurantInfo(any, any));
     });
 
@@ -131,7 +130,7 @@ void main() {
       when(mockAuthTokenManager.saveTokens(any, any)).thenAnswer((_) => Future.value());
 
       // Act
-      viewModel.onEvent(LoginButtonPressed(phoneNumber: '1234', password: 'A'));
+      viewModel.onEvent(LoginButtonPressed(code: '1234A'));
       viewModel.resetState();
 
       // Assert

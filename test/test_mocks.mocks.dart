@@ -182,19 +182,4 @@ class MockDeviceInfoService extends _i1.Mock implements _i9.DeviceInfoService {
           ),
         )),
       ) as _i5.Future<String>);
-
-  @override
-  String getDeviceType() => (super.noSuchMethod(
-        Invocation.method(
-          #getDeviceType,
-          [],
-        ),
-        returnValue: _i8.dummyValue<String>(
-          this,
-          Invocation.method(
-            #getDeviceType,
-            [],
-          ),
-        ),
-      ) as String);
 }

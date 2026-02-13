@@ -31,6 +31,8 @@ jobs:
 
       - name: Build Flutter web app
         run: flutter build web --release --base-href /gongbab-kiosk/
+        env:
+          API_URL: ${{ secrets.BASE_URL }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

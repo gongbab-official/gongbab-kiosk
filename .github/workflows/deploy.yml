@@ -24,7 +24,7 @@ jobs:
       - name: Create API config file
         run: |
           mkdir -p lib/config
-          echo "const String baseUrl = String.fromEnvironment('BASE_URL', defaultValue: 'http://localhost:8080');" > lib/config/api_config.dart
+          echo "const String baseUrl = String.fromEnvironment('BASE_URL');" > lib/config/api_config.dart
 
       - name: Install dependencies
         run: flutter pub get

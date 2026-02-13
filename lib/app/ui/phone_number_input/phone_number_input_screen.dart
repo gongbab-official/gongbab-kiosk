@@ -26,6 +26,7 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
   Color _serverStatusColor = const Color(0xFFef4444); // Red
   String _wifiStatusText = 'DISCONNECTED';
   Color _wifiStatusColor = const Color(0xFFef4444); // Red
+  String _kioskId = '';
 
   @override
   void initState() {
@@ -69,6 +70,7 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
           _wifiStatusText = 'DISCONNECTED';
           _wifiStatusColor = const Color(0xFFef4444); // Red
         }
+        _kioskId = state.kioskCode;
       });
       // ScaffoldMessenger.of(context).showSnackBar(
       //   SnackBar(content: Text('키오스크 상태: ${state.kioskStatus.status}')),
@@ -303,7 +305,7 @@ class _PhoneNumberInputScreenState extends State<PhoneNumberInputScreen> {
                     _serverStatusColor,
                   ),
                   Text(
-                    'KIOSK ID: FCT-092',
+                    'KIOSK ID: $_kioskId',
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: const Color(0xFF6b7280),

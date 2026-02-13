@@ -71,7 +71,7 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
 
     result.when(
       success: (kioskStatus) {
-        _setUiState(KioskStatusLoaded(kioskStatus, isWifiConnected));
+        _setUiState(KioskStatusLoaded(kioskStatus, isWifiConnected, kioskCode));
       },
       failure: (code, data) {
         _setUiState(Error('Failed to fetch kiosk status: $code'));

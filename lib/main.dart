@@ -29,7 +29,8 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 brightness: Brightness.dark,
                 scaffoldBackgroundColor: const Color(0xFF1a1f2e),
-                primaryColor: const Color(0xFF3b82f6),
+                primaryColor: const Color(0xFF1a1f2e).withOpacity(0.5),
+                // primaryColor: const Color(0xFF3b82f6),
                 fontFamily: 'Pretendard',
               ),
               debugShowCheckedModeBanner: false,

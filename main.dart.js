@@ -86356,7 +86356,7 @@ M(a){var s=$.awc().$1$0(t.KD).b
 s===$&&A.a()
 return new A.C7(new A.ach(s),null)}}
 A.ach.prototype={
-$2(a,b){return new A.nl(this.a,"gongbab",A.vS(B.ad,null,"Pretendard",A.aP(B.d.aS(127.5),B.cb.D()>>>16&255,B.cb.D()>>>8&255,B.cb.D()&255),B.cb,null),!1,null)},
+$2(a,b){return new A.nl(this.a,"\uacf5\ubc25\ud0a4\uc624\uc2a4\ud06c",A.vS(B.ad,null,"Pretendard",A.aP(B.d.aS(127.5),B.cb.D()>>>16&255,B.cb.D()>>>8&255,B.cb.D()&255),B.cb,null),!1,null)},
 $S:586}
 A.ym.prototype={}
 A.a1k.prototype={

@@ -4,12 +4,13 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i4;
+import 'dart:ui' as _i5;
 
-import 'package:flutter/widgets.dart' as _i2;
-import 'package:go_router/src/state.dart' as _i5;
+import 'package:flutter/cupertino.dart' as _i2;
+import 'package:go_router/src/state.dart' as _i6;
 import 'package:gongbab/data/auth/auth_token_manager.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:mockito/src/dummies.dart' as _i6;
+import 'package:mockito/src/dummies.dart' as _i7;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -51,6 +52,12 @@ class MockAuthTokenManager extends _i1.Mock implements _i3.AuthTokenManager {
   MockAuthTokenManager() {
     _i1.throwOnMissingStub(this);
   }
+
+  @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+      ) as bool);
 
   @override
   _i4.Future<void> saveTokens(
@@ -95,13 +102,49 @@ class MockAuthTokenManager extends _i1.Mock implements _i3.AuthTokenManager {
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),
       ) as _i4.Future<void>);
+
+  @override
+  void addListener(_i5.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(_i5.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [GoRouterState].
 ///
 /// See the documentation for Mockito's code generation for more information.
 // ignore: must_be_immutable
-class MockGoRouterState extends _i1.Mock implements _i5.GoRouterState {
+class MockGoRouterState extends _i1.Mock implements _i6.GoRouterState {
   MockGoRouterState() {
     _i1.throwOnMissingStub(this);
   }
@@ -118,7 +161,7 @@ class MockGoRouterState extends _i1.Mock implements _i5.GoRouterState {
   @override
   String get matchedLocation => (super.noSuchMethod(
         Invocation.getter(#matchedLocation),
-        returnValue: _i6.dummyValue<String>(
+        returnValue: _i7.dummyValue<String>(
           this,
           Invocation.getter(#matchedLocation),
         ),
@@ -156,7 +199,7 @@ class MockGoRouterState extends _i1.Mock implements _i5.GoRouterState {
             #fragment: fragment,
           },
         ),
-        returnValue: _i6.dummyValue<String>(
+        returnValue: _i7.dummyValue<String>(
           this,
           Invocation.method(
             #namedLocation,

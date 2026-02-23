@@ -4,9 +4,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i5;
+import 'dart:ui' as _i9;
 
 import 'package:gongbab/data/auth/auth_token_manager.dart' as _i3;
-import 'package:gongbab/data/device/device_info_service.dart' as _i9;
+import 'package:gongbab/data/device/device_info_service.dart' as _i10;
 import 'package:gongbab/domain/entities/auth/login_entity.dart' as _i7;
 import 'package:gongbab/domain/repositories/auth_repository.dart' as _i2;
 import 'package:gongbab/domain/usecases/login_usecase.dart' as _i4;
@@ -116,6 +117,12 @@ class MockAuthTokenManager extends _i1.Mock implements _i3.AuthTokenManager {
   }
 
   @override
+  bool get hasListeners => (super.noSuchMethod(
+        Invocation.getter(#hasListeners),
+        returnValue: false,
+      ) as bool);
+
+  @override
   _i5.Future<void> saveTokens(
     String? accessToken,
     String? refreshToken,
@@ -158,12 +165,48 @@ class MockAuthTokenManager extends _i1.Mock implements _i3.AuthTokenManager {
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
       ) as _i5.Future<void>);
+
+  @override
+  void addListener(_i9.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #addListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void removeListener(_i9.VoidCallback? listener) => super.noSuchMethod(
+        Invocation.method(
+          #removeListener,
+          [listener],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void dispose() => super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void notifyListeners() => super.noSuchMethod(
+        Invocation.method(
+          #notifyListeners,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [DeviceInfoService].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockDeviceInfoService extends _i1.Mock implements _i9.DeviceInfoService {
+class MockDeviceInfoService extends _i1.Mock implements _i10.DeviceInfoService {
   MockDeviceInfoService() {
     _i1.throwOnMissingStub(this);
   }

@@ -53,7 +53,7 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
 
     final int? restaurantId = _authTokenManager.getRestaurantId();
     final String? kioskCode = _authTokenManager.getKioskCode();
-    final String clientTime = DateTime.now().toIso8601String();
+    final String clientTime = DateTime.now().toIso8601String().substring(0, 19);
 
     if (restaurantId == null || kioskCode == null) {
       _setUiState(Error('Restaurant ID or Kiosk Code not found. Please log in again.'));
@@ -119,7 +119,7 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
   Future<void> _checkIn(EmployeeMatch employee) async {
     _setUiState(Loading());
 
-    final String clientTime = DateTime.now().toIso8601String();
+    final String clientTime = DateTime.now().toIso8601String().substring(0, 19);
     final int? restaurantId = _authTokenManager.getRestaurantId();
     final String? kioskCode = _authTokenManager.getKioskCode();
 

@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return ScreenUtilInit(
         builder: (context, child) => MaterialApp.router(
               routerConfig: router,
-              title: 'gongbab',
+              title: '공밥키오스크',
               theme: ThemeData(
                 brightness: Brightness.dark,
                 scaffoldBackgroundColor: const Color(0xFF1a1f2e),

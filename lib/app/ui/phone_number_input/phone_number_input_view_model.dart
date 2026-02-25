@@ -146,7 +146,7 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
         }
       },
       failure: (code, data) {
-        _setUiState(Error('체크인에 실패했습니다: $code'));
+        _setUiState(Error('체크인에 실패했습니다.\n${data?['message']}'));
       },
       error: (error) {
         _setUiState(Error('체크인 중 오류가 발생했습니다: $error'));

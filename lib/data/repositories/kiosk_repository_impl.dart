@@ -83,12 +83,12 @@ class KioskRepositoryImpl implements KioskRepository { // KioskRepository 인터
         mealType: model.mealType,
         mealDate: model.mealDate,
         employee: Employee(
-          id: model.employee.id,
-          name: model.employee.name,
+          id: model.employee?.id,
+          name: model.employee?.name,
         ),
         company: Company(
-          id: model.company.id,
-          name: model.company.name,
+          id: model.company?.id,
+          name: model.company?.name,
         ),
         eatenAt: model.eatenAt,
         message: model.message,

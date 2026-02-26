@@ -12,11 +12,14 @@ KioskCheckInModel _$KioskCheckInModelFromJson(Map<String, dynamic> json) =>
       mealLogId: (json['mealLogId'] as num).toInt(),
       mealType: json['mealType'] as String,
       mealDate: json['mealDate'] as String,
-      employee:
-          EmployeeModel.fromJson(json['employee'] as Map<String, dynamic>),
-      company: CompanyModel.fromJson(json['company'] as Map<String, dynamic>),
-      eatenAt: json['eatenAt'] as String,
-      message: json['message'] as String,
+      employee: json['employee'] == null
+          ? null
+          : EmployeeModel.fromJson(json['employee'] as Map<String, dynamic>),
+      company: json['company'] == null
+          ? null
+          : CompanyModel.fromJson(json['company'] as Map<String, dynamic>),
+      eatenAt: json['eatenAt'] as String?,
+      message: json['message'] as String?,
     );
 
 Map<String, dynamic> _$KioskCheckInModelToJson(KioskCheckInModel instance) =>

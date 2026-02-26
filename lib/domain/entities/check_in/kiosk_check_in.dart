@@ -8,8 +8,8 @@ class KioskCheckIn {
   final String mealDate;
   final Employee? employee;
   final Company? company;
-  final String eatenAt;
-  final String message;
+  final String? eatenAt;
+  final String? message;
 
   KioskCheckIn({
     required this.result,
@@ -18,7 +18,7 @@ class KioskCheckIn {
     required this.mealDate,
     this.employee,
     this.company,
-    required this.eatenAt,
-    required this.message,
+    this.eatenAt,
+    this.message,
   });
 }

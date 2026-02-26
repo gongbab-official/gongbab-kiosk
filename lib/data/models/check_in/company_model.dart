@@ -4,12 +4,12 @@ part 'company_model.g.dart';
 
 @JsonSerializable()
 class CompanyModel {
-  final int id;
-  final String name;
+  final int? id;
+  final String? name;
 
   CompanyModel({
-    required this.id,
-    required this.name,
+    this.id,
+    this.name,
   });
 
   factory CompanyModel.fromJson(Map<String, dynamic> json) => _$CompanyModelFromJson(json);

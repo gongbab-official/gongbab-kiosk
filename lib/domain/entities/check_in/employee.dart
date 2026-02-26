@@ -1,9 +1,9 @@
 class Employee {
-  final int id;
-  final String name;
+  final int? id;
+  final String? name;
 
   Employee({
-    required this.id,
-    required this.name,
+    this.id,
+    this.name,
   });
 }

@@ -10,20 +10,20 @@ class KioskCheckInModel {
   final int mealLogId;
   final String mealType;
   final String mealDate;
-  final EmployeeModel employee;
-  final CompanyModel company;
-  final String eatenAt;
-  final String message;
+  final EmployeeModel? employee;
+  final CompanyModel? company;
+  final String? eatenAt;
+  final String? message;
 
   KioskCheckInModel({
     required this.result,
     required this.mealLogId,
     required this.mealType,
     required this.mealDate,
-    required this.employee,
-    required this.company,
-    required this.eatenAt,
-    required this.message,
+    this.employee,
+    this.company,
+    this.eatenAt,
+    this.message,
   });
 
   factory KioskCheckInModel.fromJson(Map<String, dynamic> json) => _$KioskCheckInModelFromJson(json);

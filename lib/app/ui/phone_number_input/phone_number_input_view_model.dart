@@ -8,6 +8,7 @@ import 'package:gongbab/app/ui/phone_number_input/phone_number_input_ui_state.da
 import 'package:gongbab/app/ui/phone_number_input/phone_number_input_event.dart';
 import 'package:gongbab/domain/entities/lookup/employee_match.dart';
 import 'package:gongbab/data/auth/auth_token_manager.dart';
+import 'package:logger/logger.dart';
 
 @injectable
 class PhoneNumberInputViewModel extends ChangeNotifier {
@@ -140,15 +141,17 @@ class PhoneNumberInputViewModel extends ChangeNotifier {
         if (checkInResult.result == 'LOGGED') {
           _setUiState(CheckInSuccess(checkInResult));
         } else if (checkInResult.result == 'ALREADY_LOGGED') {
-          _setUiState(AlreadyLogged(checkInResult.message));
+          Logger().d('Already logged in ${checkInResult.message}');
+          _setUiState(AlreadyLogged(checkInResult.message ?? ''));
         } else {
-          _setUiState(Error(checkInResult.message));
+          _setUiState(Error(checkInResult.message ?? ''));
         }
       },
       failure: (code, data) {
         _setUiState(Error('체크인에 실패했습니다.\n${data?['message']}'));
       },
       error: (error) {
+        Logger().d('Error checking in: $error');
         _setUiState(Error('체크인 중 오류가 발생했습니다: $error'));
       },
     );
